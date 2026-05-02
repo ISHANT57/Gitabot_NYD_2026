@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 import logging
 from services.rag_service import RAGService
 
@@ -8,6 +8,11 @@ main_bp = Blueprint('main', __name__)
 
 # Initialize RAG service
 rag_service = RAGService()
+
+@main_bp.route('/')
+def index():
+    """Serve the main web app"""
+    return render_template('index.html')
 
 @main_bp.route('/api/search', methods=['POST'])
 def api_search():

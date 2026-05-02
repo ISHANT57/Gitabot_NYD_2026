@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DharmaBot — Hindu Texts Oracle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="mandala-bg"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <span class="om-symbol">ॐ</span>
+        <div class="logo-text">
+          <span class="logo-title">DharmaBot</span>
+          <span class="logo-sub">Wisdom of Hindu Sacred Texts</span>
+        </div>
+      </div>
+      <div class="header-pills">
+        <span class="pill pill-gita">Bhagavad Gita</span>
+        <span class="pill pill-ramayana">Ramayana</span>
+        <span class="pill pill-mahabharata">Mahabharata</span>
+      </div>
+      <button class="stats-toggle-btn" id="statsToggle" title="Database Statistics">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Stats
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats Panel -->
+  <div class="stats-panel" id="statsPanel">
+    <div class="stats-inner">
+      <h3 class="stats-heading">Database Overview</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="statDocs">—</div>
+          <div class="stat-label">Total Documents</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statIndexed">—</div>
+          <div class="stat-label">Indexed Vectors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statStatus">—</div>
+          <div class="stat-label">Store Status</div>
+        </div>
+      </div>
+      <button class="init-btn" id="initDb">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        Initialize Database
+      </button>
+    </div>
+  </div>
+
+  <!-- Main layout -->
+  <main class="main-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h4 class="sidebar-heading">Filter by Text</h4>
+        <div class="filter-group">
+          <label class="filter-opt active" data-val="">
+            <span class="filter-dot all"></span>All Texts
+          </label>
+          <label class="filter-opt" data-val="bhagavad_gita_qa">
+            <span class="filter-dot gita"></span>Bhagavad Gita
+          </label>
+          <label class="filter-opt" data-val="ramayana_verses_comprehensive">
+            <span class="filter-dot ramayana"></span>Ramayana
+          </label>
+          <label class="filter-opt" data-val="mahabharata_characters">
+            <span class="filter-dot mahabharata"></span>Mahabharata
+          </label>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h4 class="sidebar-heading">Ask a Verse</h4>
+        <div class="verse-lookup">
+          <div class="verse-inputs">
+            <input class="verse-input" id="verseChapter" type="number" placeholder="Ch." min="1" />
+            <span class="verse-sep">:</span>
+            <input class="verse-input" id="verseVerse" type="number" placeholder="Vs." min="1" />
+          </div>
+          <button class="verse-btn" id="verseLookup">Look Up</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h4 class="sidebar-heading">Suggested Questions</h4>
+        <ul class="suggestions">
+          <li class="suggestion-item" data-q="What is the meaning of dharma in the Bhagavad Gita?">What is dharma?</li>
+          <li class="suggestion-item" data-q="What does Krishna teach Arjuna about duty and action?">Krishna's teaching on duty</li>
+          <li class="suggestion-item" data-q="Who is Hanuman and what is his role in the Ramayana?">Who is Hanuman?</li>
+          <li class="suggestion-item" data-q="What is the significance of moksha in Hindu philosophy?">What is moksha?</li>
+          <li class="suggestion-item" data-q="Describe the relationship between the Pandavas and Kauravas">Pandavas vs Kauravas</li>
+          <li class="suggestion-item" data-q="What does the Bhagavad Gita say about the eternal soul (Atman)?">The eternal soul (Atman)</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Chat area -->
+    <section class="chat-area">
+      <div class="messages" id="messages">
+        <!-- Welcome message -->
+        <div class="message bot-message welcome-message">
+          <div class="bot-avatar"><span>ॐ</span></div>
+          <div class="message-bubble">
+            <p class="welcome-namaste">🙏 Namaste</p>
+            <p>I am DharmaBot, your guide through the wisdom of Hindu sacred texts. I can answer questions about the <strong>Bhagavad Gita</strong>, <strong>Ramayana</strong>, and <strong>Mahabharata</strong>.</p>
+            <p>Ask me about characters, verses, philosophical concepts, or the teachings of these timeless epics.</p>
+            <div class="welcome-tags">
+              <span>Karma</span><span>Dharma</span><span>Moksha</span><span>Yoga</span><span>Atman</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="input-bar">
+        <div class="input-wrapper">
+          <textarea
+            class="chat-input"
+            id="chatInput"
+            placeholder="Ask about Hindu sacred texts…"
+            rows="1"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" title="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <p class="input-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Verse modal -->
+  <div class="modal-overlay" id="verseModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-header">
+        <span class="om-small">ॐ</span>
+        <span class="modal-ref" id="modalRef">Chapter — Verse —</span>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
