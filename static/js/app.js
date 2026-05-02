@@ -1,37 +1,39 @@
 'use strict';
 
-// ── State ──────────────────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────────────
 let activeFilter = '';
 let isLoading = false;
 
-// ── DOM refs ───────────────────────────────────────────────────────────
-const messagesEl  = document.getElementById('messages');
-const chatInput   = document.getElementById('chatInput');
-const sendBtn     = document.getElementById('sendBtn');
-const statsToggle = document.getElementById('statsToggle');
-const statsPanel  = document.getElementById('statsPanel');
-const initDbBtn   = document.getElementById('initDb');
-const verseLookupBtn = document.getElementById('verseLookup');
-const verseModal  = document.getElementById('verseModal');
-const modalClose  = document.getElementById('modalClose');
+// ── DOM ───────────────────────────────────────────────────────────────────
+const messagesEl    = document.getElementById('messages');
+const chatInput     = document.getElementById('chatInput');
+const sendBtn       = document.getElementById('sendBtn');
+const charCount     = document.getElementById('charCount');
+const statsToggle   = document.getElementById('statsToggle');
+const statsDrawer   = document.getElementById('statsDrawer');
+const initDbBtn     = document.getElementById('initDb');
+const verseLookupBtn= document.getElementById('verseLookup');
+const verseModal    = document.getElementById('verseModal');
+const modalClose    = document.getElementById('modalClose');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar       = document.getElementById('sidebar');
+const clearChat     = document.getElementById('clearChat');
+const statusDot     = document.getElementById('statusDot');
+const statusText    = document.getElementById('statusText');
+const breadcrumbFilter = document.getElementById('breadcrumbFilter');
 
-// ── Helpers ────────────────────────────────────────────────────────────
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+// ── Utilities ─────────────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function formatAnswer(text) {
-  // Bold **text**
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  // Italic *text*
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  // Newlines to paragraphs
   const paras = text.split(/\n{2,}/);
-  return paras.map(p => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
+  return paras.map(p => `<p>${p.replace(/\n/g,'<br/>')}</p>`).join('');
 }
 
 function scrollToBottom() {
@@ -44,163 +46,145 @@ function setLoading(val) {
   chatInput.disabled = val;
 }
 
-// ── Message builders ───────────────────────────────────────────────────
-function appendUserMessage(text) {
+// ── Message builders ──────────────────────────────────────────────────────
+function appendUserMsg(text) {
   const el = document.createElement('div');
   el.className = 'message user-message';
   el.innerHTML = `
-    <div class="user-avatar">🙏</div>
-    <div class="message-bubble">${escapeHtml(text)}</div>
-  `;
+    <div class="user-avatar">👤</div>
+    <div class="msg-bubble">${escHtml(text)}</div>`;
   messagesEl.appendChild(el);
   scrollToBottom();
 }
 
-function appendTypingIndicator() {
+function appendTyping() {
   const el = document.createElement('div');
   el.className = 'message bot-message typing-indicator';
-  el.id = 'typingIndicator';
+  el.id = 'typingEl';
   el.innerHTML = `
-    <div class="bot-avatar"><span>ॐ</span></div>
-    <div class="message-bubble">
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-      <div class="typing-dot"></div>
-    </div>
-  `;
+    <div class="bot-avatar">ॐ</div>
+    <div class="msg-bubble">
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+      <div class="t-dot"></div>
+    </div>`;
   messagesEl.appendChild(el);
   scrollToBottom();
 }
 
-function removeTypingIndicator() {
-  const el = document.getElementById('typingIndicator');
-  if (el) el.remove();
+function removeTyping() {
+  document.getElementById('typingEl')?.remove();
 }
 
-function appendBotMessage(answer, confidence, contextUsed) {
+function appendBotMsg(answer, confidence, contextUsed) {
   const el = document.createElement('div');
   el.className = 'message bot-message';
 
-  const confPct = confidence != null ? Math.round(confidence * 100) : null;
-  let confHtml = '';
-  if (confPct !== null && confPct > 0) {
-    const color = confPct >= 70 ? '#D4A017' : confPct >= 40 ? '#FF6B00' : '#7B1D1D';
-    confHtml = `
-      <div class="confidence-bar">
-        <span class="confidence-label">Relevance</span>
-        <div class="confidence-track">
-          <div class="confidence-fill" style="width:${confPct}%; background: linear-gradient(90deg, ${color}, ${color}cc);"></div>
+  const pct = confidence != null ? Math.round(confidence * 100) : 0;
+  let metaHtml = '';
+  if (pct > 0) {
+    metaHtml = `
+      <div class="msg-meta">
+        <span class="meta-label">Relevance</span>
+        <div class="conf-track">
+          <div class="conf-fill" style="width:${pct}%"></div>
         </div>
-        <span class="confidence-pct">${confPct}%</span>
+        <span class="conf-pct">${pct}%</span>
+        ${contextUsed ? `<span class="ctx-badge">${contextUsed} sources</span>` : ''}
       </div>`;
   }
 
   el.innerHTML = `
-    <div class="bot-avatar"><span>ॐ</span></div>
-    <div class="message-bubble">
+    <div class="bot-avatar">ॐ</div>
+    <div class="msg-bubble">
       ${formatAnswer(answer)}
-      ${confHtml}
-    </div>
-  `;
+      ${metaHtml}
+    </div>`;
   messagesEl.appendChild(el);
   scrollToBottom();
 }
 
-function appendErrorMessage(msg) {
+function appendErrorMsg(msg) {
   const el = document.createElement('div');
-  el.className = 'message bot-message error-message';
+  el.className = 'message bot-message';
   el.innerHTML = `
-    <div class="bot-avatar"><span>ॐ</span></div>
-    <div class="message-bubble"><p>⚠️ ${escapeHtml(msg)}</p></div>
-  `;
+    <div class="bot-avatar">ॐ</div>
+    <div class="msg-bubble error-bubble"><p>⚠ ${escHtml(msg)}</p></div>`;
   messagesEl.appendChild(el);
   scrollToBottom();
 }
 
-// ── API calls ──────────────────────────────────────────────────────────
-async function sendQuestion(question) {
-  if (!question.trim() || isLoading) return;
+// ── API ───────────────────────────────────────────────────────────────────
+async function sendQuestion(q) {
+  if (!q.trim() || isLoading) return;
   setLoading(true);
-  appendUserMessage(question);
-  appendTypingIndicator();
+  appendUserMsg(q);
+  appendTyping();
 
   try {
     const res = await fetch('/api/search', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        question: question.trim(),
-        source_filter: activeFilter || null
-      })
+      body: JSON.stringify({ question: q.trim(), source_filter: activeFilter || null })
     });
     const data = await res.json();
-    removeTypingIndicator();
-
-    if (data.error) {
-      appendErrorMessage(data.error);
-    } else {
-      appendBotMessage(data.answer, data.confidence, data.context_used);
-    }
-  } catch (err) {
-    removeTypingIndicator();
-    appendErrorMessage('Could not reach the server. Please check your connection.');
+    removeTyping();
+    if (data.error) appendErrorMsg(data.error);
+    else appendBotMsg(data.answer, data.confidence, data.context_used);
+  } catch {
+    removeTyping();
+    appendErrorMsg('Network error — could not reach the server.');
   } finally {
     setLoading(false);
   }
 }
 
-async function lookupVerse(chapter, verse) {
+async function lookupVerse(ch, vs) {
   try {
-    const res = await fetch(`/api/verse/${encodeURIComponent(chapter)}/${encodeURIComponent(verse)}`);
+    const res = await fetch(`/api/verse/${encodeURIComponent(ch)}/${encodeURIComponent(vs)}`);
     const data = await res.json();
+    if (!data.found) { alert(`Verse ${ch}.${vs} not found.`); return; }
 
-    if (!data.found) {
-      alert(`Verse ${chapter}.${verse} was not found in the database.`);
-      return;
-    }
-
-    document.getElementById('modalRef').textContent = `Chapter ${chapter} · Verse ${verse}`;
+    document.getElementById('modalRef').textContent = `Chapter ${ch} · Verse ${vs}`;
     const body = document.getElementById('modalBody');
     body.innerHTML = '';
 
     const fields = [
-      { label: 'Source', val: data.source, cls: '' },
-      { label: 'Sanskrit', val: data.sanskrit, cls: '' },
+      { label: 'Source', val: data.source },
+      { label: 'Sanskrit', val: data.sanskrit },
       { label: 'Translation', val: data.translation, cls: 'translation' },
-      { label: 'Commentary', val: data.explanation, cls: '' },
+      { label: 'Commentary', val: data.explanation },
     ];
-
     fields.forEach(f => {
       if (!f.val) return;
-      const lbl = document.createElement('div');
-      lbl.className = 'verse-field-label';
-      lbl.textContent = f.label;
-      const val = document.createElement('div');
-      val.className = `verse-field-val ${f.cls}`;
-      val.textContent = f.val;
-      body.appendChild(lbl);
-      body.appendChild(val);
+      const div = document.createElement('div');
+      div.className = 'verse-field';
+      div.innerHTML = `
+        <div class="vf-label">${f.label}</div>
+        <div class="vf-val ${f.cls||''}">${escHtml(f.val)}</div>`;
+      body.appendChild(div);
     });
-
     verseModal.classList.add('open');
-  } catch (err) {
-    alert('Error looking up verse.');
-  }
+  } catch { alert('Error looking up verse.'); }
 }
 
 async function loadStats() {
   try {
     const res = await fetch('/api/stats');
-    const data = await res.json();
-    document.getElementById('statDocs').textContent = data.total_documents?.toLocaleString() ?? '0';
-    document.getElementById('statIndexed').textContent = data.indexed_documents?.toLocaleString() ?? '0';
-    document.getElementById('statStatus').textContent = data.status ?? '—';
-  } catch (_) {
-    document.getElementById('statStatus').textContent = 'Offline';
+    const d = await res.json();
+    document.getElementById('statDocs').textContent    = (d.total_documents ?? 0).toLocaleString();
+    document.getElementById('statIndexed').textContent = (d.indexed_documents ?? 0).toLocaleString();
+    document.getElementById('statStatus').textContent  = d.status ?? '—';
+    const online = (d.total_documents ?? 0) > 0;
+    statusDot.className = 'status-dot ' + (online ? 'online' : 'offline');
+    statusText.textContent = online ? `${(d.total_documents).toLocaleString()} docs` : 'Empty DB';
+  } catch {
+    statusDot.className = 'status-dot offline';
+    statusText.textContent = 'Offline';
   }
 }
 
-async function initDatabase() {
+async function initDb() {
   initDbBtn.disabled = true;
   initDbBtn.textContent = 'Initializing…';
   try {
@@ -209,92 +193,102 @@ async function initDatabase() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ force_reload: false })
     });
-    const data = await res.json();
-    if (data.error) alert('Error: ' + data.error);
-    else { alert('Database initialized successfully!'); loadStats(); }
-  } catch (_) {
-    alert('Failed to initialize database.');
-  } finally {
+    const d = await res.json();
+    if (d.error) alert('Error: ' + d.error);
+    else { await loadStats(); }
+  } catch { alert('Failed to initialize.'); }
+  finally {
     initDbBtn.disabled = false;
-    initDbBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-      </svg>
-      Initialize Database`;
+    initDbBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Initialize DB`;
   }
 }
 
-// ── Event Listeners ────────────────────────────────────────────────────
+// ── Event listeners ───────────────────────────────────────────────────────
 
-// Send on button click
+// Send
 sendBtn.addEventListener('click', () => {
   const q = chatInput.value.trim();
-  if (q) { sendQuestion(q); chatInput.value = ''; autoResize(); }
+  if (q) { sendQuestion(q); chatInput.value = ''; autoResize(); charCount.textContent = '0'; }
 });
 
-// Enter key (Shift+Enter = new line)
 chatInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     const q = chatInput.value.trim();
-    if (q) { sendQuestion(q); chatInput.value = ''; autoResize(); }
+    if (q) { sendQuestion(q); chatInput.value = ''; autoResize(); charCount.textContent = '0'; }
   }
+  if (e.key === 'Escape') { chatInput.value = ''; autoResize(); charCount.textContent = '0'; }
 });
 
-// Auto-resize textarea
+chatInput.addEventListener('input', () => {
+  autoResize();
+  charCount.textContent = chatInput.value.length;
+});
+
 function autoResize() {
   chatInput.style.height = 'auto';
-  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
 }
-chatInput.addEventListener('input', autoResize);
 
-// Stats toggle
+// Sidebar toggle
+sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+
+// Stats
 statsToggle.addEventListener('click', () => {
-  statsPanel.classList.toggle('open');
-  if (statsPanel.classList.contains('open')) loadStats();
+  statsDrawer.classList.toggle('open');
+  if (statsDrawer.classList.contains('open')) loadStats();
 });
 
-// Close stats panel if clicking outside
-document.addEventListener('click', e => {
-  if (!statsPanel.contains(e.target) && !statsToggle.contains(e.target)) {
-    statsPanel.classList.remove('open');
-  }
+// Clear
+clearChat.addEventListener('click', () => {
+  messagesEl.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'welcome-card';
+  card.innerHTML = `
+    <div class="welcome-om">ॐ</div>
+    <h1 class="welcome-title">Hindu Sacred Texts Intelligence</h1>
+    <p class="welcome-sub">Powered by RAG · Mixtral 8x7B · FAISS Vector Search</p>
+    <div class="welcome-chips">
+      <span class="chip">Bhagavad Gita</span>
+      <span class="chip">Ramayana</span>
+      <span class="chip">Mahabharata</span>
+      <span class="chip">45,784 Documents</span>
+    </div>
+    <p class="welcome-desc">Ask questions about characters, verses, philosophical concepts, or the teachings of these sacred epics.</p>`;
+  messagesEl.appendChild(card);
 });
 
-// Init DB
-initDbBtn.addEventListener('click', initDatabase);
-
-// Filter options
-document.querySelectorAll('.filter-opt').forEach(opt => {
-  opt.addEventListener('click', () => {
-    document.querySelectorAll('.filter-opt').forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
-    activeFilter = opt.dataset.val;
+// Filter
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.val;
+    const labels = { '': 'All Texts', 'bhagavad_gita_qa': 'Bhagavad Gita', 'ramayana_verses_comprehensive': 'Ramayana', 'mahabharata_characters': 'Mahabharata' };
+    breadcrumbFilter.textContent = labels[activeFilter] || 'All Texts';
   });
 });
 
-// Suggestions
-document.querySelectorAll('.suggestion-item').forEach(item => {
-  item.addEventListener('click', () => {
-    sendQuestion(item.dataset.q);
-  });
+// Prompts
+document.querySelectorAll('.prompt-item').forEach(item => {
+  item.addEventListener('click', () => sendQuestion(item.dataset.q));
 });
 
-// Verse lookup
+// Verse
 verseLookupBtn.addEventListener('click', () => {
   const ch = document.getElementById('verseChapter').value;
   const vs = document.getElementById('verseVerse').value;
-  if (!ch || !vs) { alert('Please enter both chapter and verse numbers.'); return; }
+  if (!ch || !vs) { alert('Enter both chapter and verse.'); return; }
   lookupVerse(ch, vs);
 });
 
-// Modal close
+// Modal
 modalClose.addEventListener('click', () => verseModal.classList.remove('open'));
-verseModal.addEventListener('click', e => {
-  if (e.target === verseModal) verseModal.classList.remove('open');
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') verseModal.classList.remove('open');
-});
+verseModal.addEventListener('click', e => { if (e.target === verseModal) verseModal.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') verseModal.classList.remove('open'); });
+
+// Init DB
+initDbBtn.addEventListener('click', initDb);
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+loadStats();

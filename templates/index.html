@@ -3,152 +3,202 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DharmaBot — Hindu Texts Oracle</title>
+  <title>DharmaBot — Hindu Sacred Texts AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-  <div class="mandala-bg"></div>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="logo-group">
-        <span class="om-symbol">ॐ</span>
-        <div class="logo-text">
-          <span class="logo-title">DharmaBot</span>
-          <span class="logo-sub">Wisdom of Hindu Sacred Texts</span>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">
+        <span class="brand-om">ॐ</span>
+      </div>
+      <div class="brand-info">
+        <span class="brand-name">DharmaBot</span>
+        <span class="brand-version">v2.0 · RAG Pipeline</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-label">Source Filter</p>
+      <button class="nav-item active" data-val="">
+        <span class="nav-icon">◈</span>
+        <span>All Texts</span>
+        <span class="nav-badge">3</span>
+      </button>
+      <button class="nav-item" data-val="bhagavad_gita_qa">
+        <span class="nav-icon nav-gita">◆</span>
+        <span>Bhagavad Gita</span>
+      </button>
+      <button class="nav-item" data-val="ramayana_verses_comprehensive">
+        <span class="nav-icon nav-ramayana">◆</span>
+        <span>Ramayana</span>
+      </button>
+      <button class="nav-item" data-val="mahabharata_characters">
+        <span class="nav-icon nav-mahab">◆</span>
+        <span>Mahabharata</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <p class="nav-label">Verse Lookup</p>
+      <div class="verse-form">
+        <div class="verse-row">
+          <input id="verseChapter" class="verse-input" type="number" placeholder="Ch." min="1" />
+          <span class="verse-dot">·</span>
+          <input id="verseVerse" class="verse-input" type="number" placeholder="Vs." min="1" />
         </div>
+        <button class="verse-btn" id="verseLookup">Lookup Verse →</button>
       </div>
-      <div class="header-pills">
-        <span class="pill pill-gita">Bhagavad Gita</span>
-        <span class="pill pill-ramayana">Ramayana</span>
-        <span class="pill pill-mahabharata">Mahabharata</span>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <p class="nav-label">Suggested Queries</p>
+      <ul class="prompt-list">
+        <li class="prompt-item" data-q="What is the meaning of dharma in the Bhagavad Gita?">
+          <span class="prompt-tag">Philosophy</span>
+          What is dharma?
+        </li>
+        <li class="prompt-item" data-q="What does Krishna teach Arjuna about duty and action?">
+          <span class="prompt-tag">Teaching</span>
+          Krishna on duty
+        </li>
+        <li class="prompt-item" data-q="Who is Hanuman and what is his role in the Ramayana?">
+          <span class="prompt-tag">Character</span>
+          Who is Hanuman?
+        </li>
+        <li class="prompt-item" data-q="What is the significance of moksha in Hindu philosophy?">
+          <span class="prompt-tag">Concept</span>
+          Significance of moksha
+        </li>
+        <li class="prompt-item" data-q="Describe the relationship between the Pandavas and Kauravas">
+          <span class="prompt-tag">Story</span>
+          Pandavas vs Kauravas
+        </li>
+        <li class="prompt-item" data-q="What does the Bhagavad Gita say about the eternal soul?">
+          <span class="prompt-tag">Atman</span>
+          The eternal soul
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="db-status" id="dbStatus">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Checking…</span>
       </div>
-      <button class="stats-toggle-btn" id="statsToggle" title="Database Statistics">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Stats
+      <button class="icon-btn" id="statsToggle" title="Database Stats">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </button>
     </div>
-  </header>
+  </aside>
 
-  <!-- Stats Panel -->
-  <div class="stats-panel" id="statsPanel">
-    <div class="stats-inner">
-      <h3 class="stats-heading">Database Overview</h3>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="statDocs">—</div>
-          <div class="stat-label">Total Documents</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statIndexed">—</div>
-          <div class="stat-label">Indexed Vectors</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statStatus">—</div>
-          <div class="stat-label">Store Status</div>
-        </div>
-      </div>
-      <button class="init-btn" id="initDb">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Initialize Database
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
+      <div class="topbar-breadcrumb">
+        <span class="breadcrumb-root">DharmaBot</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active" id="breadcrumbFilter">All Texts</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="model-badge">
+          <span class="model-dot"></span>
+          Mixtral 8x7B · OpenRouter
+        </div>
+        <button class="btn-outline" id="clearChat">Clear</button>
+      </div>
+    </header>
+
+    <!-- Stats drawer -->
+    <div class="stats-drawer" id="statsDrawer">
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-num" id="statDocs">—</span>
+          <span class="stat-lbl">Documents</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statIndexed">—</span>
+          <span class="stat-lbl">Indexed Vectors</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="statStatus">—</span>
+          <span class="stat-lbl">Store Status</span>
+        </div>
+        <button class="init-btn" id="initDb">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Initialize DB
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- Main layout -->
-  <main class="main-layout">
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <h4 class="sidebar-heading">Filter by Text</h4>
-        <div class="filter-group">
-          <label class="filter-opt active" data-val="">
-            <span class="filter-dot all"></span>All Texts
-          </label>
-          <label class="filter-opt" data-val="bhagavad_gita_qa">
-            <span class="filter-dot gita"></span>Bhagavad Gita
-          </label>
-          <label class="filter-opt" data-val="ramayana_verses_comprehensive">
-            <span class="filter-dot ramayana"></span>Ramayana
-          </label>
-          <label class="filter-opt" data-val="mahabharata_characters">
-            <span class="filter-dot mahabharata"></span>Mahabharata
-          </label>
-        </div>
-      </div>
-
-      <div class="sidebar-section">
-        <h4 class="sidebar-heading">Ask a Verse</h4>
-        <div class="verse-lookup">
-          <div class="verse-inputs">
-            <input class="verse-input" id="verseChapter" type="number" placeholder="Ch." min="1" />
-            <span class="verse-sep">:</span>
-            <input class="verse-input" id="verseVerse" type="number" placeholder="Vs." min="1" />
-          </div>
-          <button class="verse-btn" id="verseLookup">Look Up</button>
-        </div>
-      </div>
-
-      <div class="sidebar-section">
-        <h4 class="sidebar-heading">Suggested Questions</h4>
-        <ul class="suggestions">
-          <li class="suggestion-item" data-q="What is the meaning of dharma in the Bhagavad Gita?">What is dharma?</li>
-          <li class="suggestion-item" data-q="What does Krishna teach Arjuna about duty and action?">Krishna's teaching on duty</li>
-          <li class="suggestion-item" data-q="Who is Hanuman and what is his role in the Ramayana?">Who is Hanuman?</li>
-          <li class="suggestion-item" data-q="What is the significance of moksha in Hindu philosophy?">What is moksha?</li>
-          <li class="suggestion-item" data-q="Describe the relationship between the Pandavas and Kauravas">Pandavas vs Kauravas</li>
-          <li class="suggestion-item" data-q="What does the Bhagavad Gita say about the eternal soul (Atman)?">The eternal soul (Atman)</li>
-        </ul>
-      </div>
-    </aside>
-
-    <!-- Chat area -->
-    <section class="chat-area">
+    <!-- Chat -->
+    <div class="chat-wrap">
       <div class="messages" id="messages">
-        <!-- Welcome message -->
-        <div class="message bot-message welcome-message">
-          <div class="bot-avatar"><span>ॐ</span></div>
-          <div class="message-bubble">
-            <p class="welcome-namaste">🙏 Namaste</p>
-            <p>I am DharmaBot, your guide through the wisdom of Hindu sacred texts. I can answer questions about the <strong>Bhagavad Gita</strong>, <strong>Ramayana</strong>, and <strong>Mahabharata</strong>.</p>
-            <p>Ask me about characters, verses, philosophical concepts, or the teachings of these timeless epics.</p>
-            <div class="welcome-tags">
-              <span>Karma</span><span>Dharma</span><span>Moksha</span><span>Yoga</span><span>Atman</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Input bar -->
-      <div class="input-bar">
-        <div class="input-wrapper">
-          <textarea
-            class="chat-input"
-            id="chatInput"
-            placeholder="Ask about Hindu sacred texts…"
-            rows="1"
-          ></textarea>
-          <button class="send-btn" id="sendBtn" title="Send">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <!-- Welcome card -->
+        <div class="welcome-card">
+          <div class="welcome-om">ॐ</div>
+          <h1 class="welcome-title">Hindu Sacred Texts Intelligence</h1>
+          <p class="welcome-sub">Powered by RAG · Mixtral 8x7B · FAISS Vector Search</p>
+          <div class="welcome-chips">
+            <span class="chip">Bhagavad Gita</span>
+            <span class="chip">Ramayana</span>
+            <span class="chip">Mahabharata</span>
+            <span class="chip">45,784 Documents</span>
+          </div>
+          <p class="welcome-desc">Ask questions about characters, verses, philosophical concepts, or the teachings of these sacred epics. Use the sidebar to filter by text or look up a specific verse.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <div class="input-box">
+        <textarea
+          id="chatInput"
+          class="chat-textarea"
+          placeholder="Ask about the Bhagavad Gita, Ramayana, or Mahabharata…"
+          rows="1"
+        ></textarea>
+        <div class="input-controls">
+          <span class="char-count" id="charCount">0</span>
+          <button class="send-btn" id="sendBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send
           </button>
         </div>
-        <p class="input-hint">Press <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line</p>
       </div>
-    </section>
+      <p class="input-hint"><kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for new line · <kbd>Esc</kbd> to clear</p>
+    </div>
+
   </main>
 
   <!-- Verse modal -->
-  <div class="modal-overlay" id="verseModal">
-    <div class="modal-card">
-      <button class="modal-close" id="modalClose">✕</button>
-      <div class="modal-header">
-        <span class="om-small">ॐ</span>
-        <span class="modal-ref" id="modalRef">Chapter — Verse —</span>
+  <div class="modal-backdrop" id="verseModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <p class="modal-eyebrow">Verse Lookup</p>
+          <h3 class="modal-title" id="modalRef">Chapter — · Verse —</h3>
+        </div>
+        <button class="modal-close" id="modalClose">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
