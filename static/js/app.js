@@ -76,7 +76,47 @@ function removeTyping() {
   document.getElementById('typingEl')?.remove();
 }
 
-function appendBotMsg(answer, confidence, contextUsed) {
+const SOURCE_LABELS = {
+  'bhagavad_gita_qa':             'Bhagavad Gita',
+  'processed_gita':               'Bhagavad Gita',
+  'ramayana_verses_comprehensive': 'Ramayana',
+  'ramayana_iyd_dataset':         'Ramayana',
+  'ramayana_characters':          'Ramayana Characters',
+  'mahabharata_characters':       'Mahabharata Characters',
+};
+
+function buildSourcesHtml(sources) {
+  if (!sources || !sources.length) return '';
+  const uid = 'src-' + Date.now();
+  const rows = sources.map((s, i) => {
+    const label = SOURCE_LABELS[s.source] || s.source;
+    const ref   = (s.chapter && s.verse) ? `Ch.${s.chapter} · Vs.${s.verse}` : (s.chapter ? `Ch.${s.chapter}` : '');
+    const snip  = s.translation || s.text || '';
+    const pct   = Math.round((s.score || 0) * 100);
+    return `
+      <div class="src-card">
+        <div class="src-card-head">
+          <div class="src-card-meta">
+            <span class="src-tag">${escHtml(label)}</span>
+            ${ref ? `<span class="src-ref">${escHtml(ref)}</span>` : ''}
+          </div>
+          <span class="src-score">${pct}%</span>
+        </div>
+        ${snip ? `<p class="src-snip">${escHtml(snip.slice(0, 240))}${snip.length > 240 ? '…' : ''}</p>` : ''}
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="sources-section">
+      <button class="sources-toggle" data-target="${uid}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        View ${sources.length} Source${sources.length > 1 ? 's' : ''}
+      </button>
+      <div class="sources-list" id="${uid}">${rows}</div>
+    </div>`;
+}
+
+function appendBotMsg(answer, confidence, contextUsed, sources) {
   const el = document.createElement('div');
   el.className = 'message bot-message';
 
@@ -90,7 +130,7 @@ function appendBotMsg(answer, confidence, contextUsed) {
           <div class="conf-fill" style="width:${pct}%"></div>
         </div>
         <span class="conf-pct">${pct}%</span>
-        ${contextUsed ? `<span class="ctx-badge">${contextUsed} sources</span>` : ''}
+        ${contextUsed ? `<span class="ctx-badge">${contextUsed} docs used</span>` : ''}
       </div>`;
   }
 
@@ -99,7 +139,18 @@ function appendBotMsg(answer, confidence, contextUsed) {
     <div class="msg-bubble">
       ${formatAnswer(answer)}
       ${metaHtml}
+      ${buildSourcesHtml(sources)}
     </div>`;
+
+  // Wire up sources toggle after inserting into DOM
+  el.querySelectorAll('.sources-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const open   = target.classList.toggle('open');
+      btn.classList.toggle('open', open);
+    });
+  });
+
   messagesEl.appendChild(el);
   scrollToBottom();
 }
@@ -130,7 +181,7 @@ async function sendQuestion(q) {
     const data = await res.json();
     removeTyping();
     if (data.error) appendErrorMsg(data.error);
-    else appendBotMsg(data.answer, data.confidence, data.context_used);
+    else appendBotMsg(data.answer, data.confidence, data.context_used, data.sources);
   } catch {
     removeTyping();
     appendErrorMsg('Network error — could not reach the server.');

@@ -84,7 +84,7 @@ class FaissVectorStore:
             logger.error(f"Error adding documents: {e}")
             raise
     
-    def search(self, query_embedding: List[float], limit: int = 10, source_filter: Optional[str] = None) -> List[Dict[str, Any]]:
+    def search(self, query_embedding: List[float], limit: int = 10, source_filter=None) -> List[Dict[str, Any]]:
         """Search for similar documents"""
         try:
             if self.index.ntotal == 0:
@@ -103,9 +103,14 @@ class FaissVectorStore:
                 if idx < len(self.metadata):
                     metadata = self.metadata[idx]
                     
-                    # Apply source filter if specified
-                    if source_filter and metadata.get("source", "") != source_filter:
-                        continue
+                    # Apply source filter if specified (accepts str or list)
+                    if source_filter:
+                        doc_source = metadata.get("source", "")
+                        if isinstance(source_filter, list):
+                            if doc_source not in source_filter:
+                                continue
+                        elif doc_source != source_filter:
+                            continue
                     
                     result = {
                         "text": metadata.get("text", ""),

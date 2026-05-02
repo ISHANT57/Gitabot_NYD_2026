@@ -73,7 +73,7 @@ class RAGService:
             logger.error(f"Error initializing database: {e}")
             raise
     
-    def search_and_answer(self, question: str, source_filter: Optional[str] = None) -> Dict[str, Any]:
+    def search_and_answer(self, question: str, source_filter=None) -> Dict[str, Any]:
         """Search for relevant documents and generate an answer"""
         try:
             # Check if question is related to Hindu texts
@@ -116,12 +116,27 @@ class RAGService:
             answer = self.api_client.generate_answer(question, context)
             
             # Calculate average confidence score
-            avg_confidence = sum(result["score"] for result in search_results[:5]) / len(search_results[:5])
+            top_results = search_results[:5]
+            avg_confidence = sum(r["score"] for r in top_results) / len(top_results)
+            
+            # Build source list for UI display
+            sources = []
+            for r in top_results:
+                source_entry = {
+                    "source": r.get("source", ""),
+                    "chapter": r.get("chapter", ""),
+                    "verse": r.get("verse", ""),
+                    "text": r.get("text", "")[:300],
+                    "translation": r.get("translation", "")[:300],
+                    "score": round(r.get("score", 0), 3)
+                }
+                sources.append(source_entry)
             
             return {
                 "answer": answer,
                 "confidence": avg_confidence,
-                "context_used": len(context_parts)
+                "context_used": len(context_parts),
+                "sources": sources
             }
             
         except Exception as e:

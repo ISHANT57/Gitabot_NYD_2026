@@ -27,8 +27,20 @@ def api_search():
                 'error': 'Question is required'
             }), 400
         
+        # Map broad filter labels to actual source keys in the DB
+        source_map = {
+            'gita':         ['bhagavad_gita_qa', 'processed_gita'],
+            'ramayana':     ['ramayana_verses_comprehensive', 'ramayana_iyd_dataset', 'ramayana_characters'],
+            'mahabharata':  ['mahabharata_characters'],
+            # Direct keys also accepted
+            'bhagavad_gita_qa':             ['bhagavad_gita_qa'],
+            'ramayana_verses_comprehensive': ['ramayana_verses_comprehensive', 'ramayana_iyd_dataset', 'ramayana_characters'],
+            'mahabharata_characters':        ['mahabharata_characters'],
+        }
+        resolved_filter = source_map.get(source_filter, [source_filter] if source_filter else None)
+
         # Perform search and generate answer
-        result = rag_service.search_and_answer(question, source_filter)
+        result = rag_service.search_and_answer(question, resolved_filter)
         
         return jsonify(result)
         
