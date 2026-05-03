@@ -6,9 +6,9 @@ services:
     startCommand: python download_index.py && gunicorn --bind=0.0.0.0:$PORT --workers=1 --preload --timeout=300 --keep-alive=5 main:app
     envVars:
       - key: HF_REPO_ID
-        sync: false          # Set this to: your-hf-username/dharmabot-index
+        value: Ishant57/dharmabot-index
       - key: HF_TOKEN
-        sync: false          # Only needed if your HF dataset repo is private
+        sync: false          # Leave blank — repo is public, no token needed on Render
       - key: OPENROUTER_API_KEY
         sync: false
       - key: MISTRAL_API_KEY
