@@ -1,3 +1,1751 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:16ed792362c1e40e285bab0d2f575bf048ffb989a8112407854b87fcc8dfff9b
-size 58952
+
+
+
+{
+  "scripture": "Mahabharata",
+  "allowed_entities": {
+    "Abhimanyu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior/Prince",
+      "description": "Son of Arjuna and Subhadra; young warrior who entered and was killed inside the Chakravyuha.",
+      "notes": ""
+    },
+    "Adhiratha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Foster-father",
+      "description": "Foster-father of Karna; husband of Radha; descended from Yayati in some accounts.",
+      "notes": ""
+    },
+    "Adrika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara / Mythical",
+      "description": "An apsara cursed to become a fish; later liberated after giving birth to human children (Matsyagandha/Matsya).",
+      "notes": ""
+    },
+    "Agni": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "The fire god; appears in epic contexts (see main article).",
+      "notes": ""
+    },
+    "Alambusha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rakshasa / Warrior",
+      "description": "A rakshasa who fought for the Kauravas; defeated Iravan and later killed by Ghatotkacha.",
+      "notes": ""
+    },
+    "Alayudha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Demon",
+      "description": "Friend of Alambusha; killed by Ghatotkacha during the Night war.",
+      "notes": ""
+    },
+    "Agastya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "A venerated sage who appears in multiple Hindu texts including Mahabharata.",
+      "notes": ""
+    },
+    "Amba": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess of Kashi; later reborn as Shikhandi; central to Bhishma/Amba episodes.",
+      "notes": ""
+    },
+    "Ambalika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Mother of Pandu in certain accounts; one of the royal women connected to Hastinapura lineage.",
+      "notes": ""
+    },
+    "Ambika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Related to royal lineage and Vyasa narratives; mother of Dhritarashtra in traditional accounts.",
+      "notes": ""
+    },
+    "Ambika's maid": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Servant",
+      "description": "Chief maid sent by Ambika and Ambalika to Vyasa; mother of Vidura by union with Vyasa in the story.",
+      "notes": ""
+    },
+    "Amitaujas": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "A mighty warrior of the Panchala kingdom who fought on the Pandava side.",
+      "notes": ""
+    },
+    "Arjuna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Pandava / Archer",
+      "description": "Third Pandava brother; preeminent archer; central figure of the Bhagavad Gita episode.",
+      "notes": ""
+    },
+    "Aruni": {
+      "aliases": ["Uddalaka Aruni"],
+      "source": "Mahabharata",
+      "category": "Rishi / Figure",
+      "description": "Mentioned as Uddalaka Aruni in Mahabharata contexts.",
+      "notes": ""
+    },
+    "Ashvapati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Madra and father of Savitri in other texts; appears in epic contexts.",
+      "notes": ""
+    },
+    "Ashvins": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deities",
+      "description": "Twin gods associated with medicine; invoked in various epic tales.",
+      "notes": ""
+    },
+    "Ashwatthama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "Son of Drona; fierce warrior who fought on the Kaurava side and plays a major role in post-war events.",
+      "notes": ""
+    },
+    "Astika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi / Sage",
+      "description": "Rishi figure appearing in broader Puranic/epic contexts, referenced in Mahabharata.",
+      "notes": ""
+    },
+    "Ayu": {
+      "aliases": ["Ayus"],
+      "source": "Mahabharata",
+      "category": "Ancestor / King",
+      "description": "Ancestor of Shantanu; son of Pururavas and apsara Urvashi; father of Nahusha in genealogies.",
+      "notes": ""
+    },
+    "Ayoda Dhaumya": {
+      "aliases": ["Dhaumya"],
+      "source": "Mahabharata",
+      "category": "Rishi / Teacher",
+      "description": "Sage of Avanti who accompanied the Pandavas during exile and sang Vedic songs.",
+      "notes": ""
+    },
+    "Babhruvahana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / Warrior",
+      "description": "Son of Arjuna (in some accounts) who later becomes a king in certain narratives.",
+      "notes": ""
+    },
+    "Bahlika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "A king referenced in Mahabharata genealogies and battles.",
+      "notes": ""
+    },
+    "Bakasura": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Demon",
+      "description": "A demon encountered in sub-stories within the epic.",
+      "notes": ""
+    },
+    "Balandhara": {
+      "aliases": ["Valandhara"],
+      "source": "Mahabharata",
+      "category": "Princess / Queen",
+      "description": "Princess of Kashi; wife of Bhima (in some accounts) and mother of Sarvaga.",
+      "notes": ""
+    },
+    "Balarama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Divine / Warrior",
+      "description": "Brother of Krishna; significant divine figure who appears in Mahabharata events.",
+      "notes": ""
+    },
+    "Banasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "Son of Karna; a mace-wielder killed during the Kurukshetra war.",
+      "notes": ""
+    },
+    "Bhadra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Royal / Wife",
+      "description": "One of Vasudeva's wives; mother of children in Krishna's family lineage.",
+      "notes": "Often mentioned with Madira."
+    },
+    "Madira": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Royal / Wife",
+      "description": "Another wife of Vasudeva; connected to Krishna's family stories.",
+      "notes": ""
+    },
+    "Bhadrakali": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Fierce form of the Devi mentioned in epic contexts (e.g., Shalya Parva).",
+      "notes": ""
+    },
+    "Bhagadatta": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "King who fought in Kurukshetra war; noted in Mahabharata lists.",
+      "notes": ""
+    },
+    "Bharadvaja": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "A sage mentioned in epic lineages and narratives.",
+      "notes": ""
+    },
+    "Bharata": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Ancestor",
+      "description": "Name appears in varied contexts (several Bharatas across tradition); listed among characters.",
+      "notes": ""
+    },
+    "Bhima": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Pandava / Warrior",
+      "description": "Second Pandava brother; mighty mace-wielder; central heroic figure in war exploits.",
+      "notes": ""
+    },
+    "Bhima of Vidarbha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "A king named Bhima of Vidarbha mentioned in Vana Parva; father of Damayanti in certain tales.",
+      "notes": ""
+    },
+    "Bhishma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Granduncle / Warrior",
+      "description": "Grand elder of Hastinapura; son of Shantanu and Ganga; commanding figure in the epic.",
+      "notes": ""
+    },
+    "Bhrigu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "An ancient sage referenced in epic genealogies and Puranic contexts.",
+      "notes": ""
+    },
+    "Bhurishravas": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "Kshatriya warrior involved in Kurukshetra War episodes; mentioned in battle lists.",
+      "notes": ""
+    },
+    "Budha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity / Ancestor",
+      "description": "Celestial figure (son of Chandra) referenced in genealogies within epic tradition.",
+      "notes": ""
+    },
+    "Brahma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "Creator god of Trimurti; appears in mythic contexts cited by epic.",
+      "notes": ""
+    },
+    "Brihadashva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Elder",
+      "description": "A sage who counsels Yudhishthira and appears in narrative episodes.",
+      "notes": ""
+    },
+    "Brihaspati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Deity",
+      "description": "Preceptor of the gods; mentioned in various epic contexts.",
+      "notes": ""
+    },
+    "Chandra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity / Moon",
+      "description": "The moon god; appears in genealogies and mythic references.",
+      "notes": ""
+    },
+    "Chandravarma Kamboja": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Kamboja king of solar race mentioned in Adiparva; powerful ancient ruler.",
+      "notes": ""
+    },
+    "Chitrasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Gandharva / Warrior",
+      "description": "Gandharva figure referenced in epic lists and battles.",
+      "notes": ""
+    },
+    "Chekitana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Prince",
+      "description": "Son of Kekaya king Dhrishtaketu; valorous warrior who fought in Kurukshetra War.",
+      "notes": ""
+    },
+    "Chitra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "King of Abhisara; fought and was killed during Kurukshetra War in certain episodes.",
+      "notes": ""
+    },
+    "Chitrāngada": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "Name shared by multiple figures; includes king of Kalinga and Gandharva characters.",
+      "notes": ""
+    },
+    "Chitravahana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Manipura; father of Chitrangadaa and grandfather of Babruvahana.",
+      "notes": ""
+    },
+    "Daksha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Puranic figure",
+      "description": "Puranic progenitor figure referenced in Mahabharata contexts.",
+      "notes": ""
+    },
+    "Damayanti": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Heroine",
+      "description": "Heroine of Nalopakhyana; referenced in Mahabharata secondary narratives.",
+      "notes": ""
+    },
+    "Dantavakra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "A king/warrior figure mentioned in epic narratives.",
+      "notes": ""
+    },
+    "Danda and Dandadhara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princes",
+      "description": "Two princes of Magadha who fought for the Kauravas and were killed by Arjuna.",
+      "notes": ""
+    },
+    "Darada": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Bahlika; mentioned in lists and salutations.",
+      "notes": ""
+    },
+    "Dasharaja": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Chieftain",
+      "description": "Fisherman chieftain of Hastinapura; father of Satyavati in tradition.",
+      "notes": ""
+    },
+    "Devaki": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen / Mother",
+      "description": "Mother of Krishna; appears in Krishna family narratives referenced in the epic.",
+      "notes": ""
+    },
+    "Devasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Figure",
+      "description": "Name appears in Mahabharata related lists (see main article).",
+      "notes": ""
+    },
+    "Daityasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Figure",
+      "description": "Name mentioned in Mahabharata lists; related to Devasena in references.",
+      "notes": ""
+    },
+    "Devayani": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Figure",
+      "description": "Figure related to Yayati/Shukra narratives referenced in epic material.",
+      "notes": ""
+    },
+    "Devika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Second wife of Yudhishthira; mother of Yaudheya as per text excerpt.",
+      "notes": ""
+    },
+    "Dhaumya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage",
+      "description": "Sage who accompanied the Pandavas and served in advisory/ritual contexts.",
+      "notes": ""
+    },
+    "Dhrishtadyumna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Prince",
+      "description": "Son of Drupada; commander of the Pandava forces and slayer of Drona in many accounts.",
+      "notes": ""
+    },
+    "Dhritrashtra": {
+      "aliases": ["Dhritarashtra"],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Blind king of Hastinapura; father of the Kauravas; central royal figure.",
+      "notes": ""
+    },
+    "Dhrishtaketu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Ruler of Kekeya; father of warriors who participate in the war.",
+      "notes": "Multiple rulers named Dhrishtaketu in different regions are referenced."
+    },
+    "Divodasa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Ancient king referenced in epic genealogies and episodes.",
+      "notes": ""
+    },
+    "Draupadi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Wife of the five Pandavas; central female figure around whom many events revolve.",
+      "notes": ""
+    },
+    "Drona": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Teacher / Warrior",
+      "description": "Royal teacher (guru) of Pandavas and Kauravas; key Kaurava ally and commander.",
+      "notes": ""
+    },
+    "Drupada": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Panchala; father of Draupadi and Dhrishtadyumna.",
+      "notes": ""
+    },
+    "Durmasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "Son of Dushasana who fought in the war and was killed by the Draupadeyas' sons.",
+      "notes": ""
+    },
+    "Duryodhana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Kaurava Leader",
+      "description": "Eldest Kaurava brother and principal antagonist leading the Kaurava faction.",
+      "notes": ""
+    },
+    "Durga": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Goddess Durga is eulogized in parts of the epic; appears in warrior/vision contexts.",
+      "notes": ""
+    },
+    "Dushala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Sister of the Kauravas; minor royal figure in lists.",
+      "notes": ""
+    },
+    "Dushasana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Kaurava",
+      "description": "Brother of Duryodhana; infamous for humiliating Draupadi in the royal court.",
+      "notes": ""
+    },
+    "Dushyanta": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King known from earlier legends (Shakuntala/Dushyanta episode) referenced in epic contexts.",
+      "notes": ""
+    },
+    "Ekalavya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Archer / Student",
+      "description": "Skilled archer who trained himself and figures in the Drona/Arjuna narratives.",
+      "notes": ""
+    },
+    "Gandhari": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Wife of Dhritarashtra and mother of the Kauravas; known for her self-imposed blindfold.",
+      "notes": ""
+    },
+    "Gandhari's maid": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Servant",
+      "description": "Mother of Yuyutsu in some accounts; used in the birth narrative of the Kauravas.",
+      "notes": ""
+    },
+    "Ganga": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess / River",
+      "description": "River goddess; mother of Bhishma in the epic tradition.",
+      "notes": ""
+    },
+    "Ghatotkacha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rakshasa / Warrior",
+      "description": "Son of Bhima; powerful night-fighter who fought for Pandavas and was killed in the war.",
+      "notes": ""
+    },
+    "Ghritachi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara",
+      "description": "A celestial dancer (apsara) mentioned in various Puranic/epic contexts.",
+      "notes": ""
+    },
+    "Hanuman": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Vanara / Divine",
+      "description": "Appears in Mahabharata secondary narratives; tests Bhima and imparts lessons; limited role compared to Ramayana.",
+      "notes": ""
+    },
+    "Haryyashva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Ayodhya in some genealogies; husband of Madhavi; father of Vasumanas.",
+      "notes": ""
+    },
+    "Hayagriva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Avatar / Deity",
+      "description": "Horse-headed avatar of Vishnu mentioned in mythic contexts.",
+      "notes": ""
+    },
+    "Hidimb/Hidimba/Hidimbi": {
+      "aliases": ["Hidimb", "Hidimbi"],
+      "source": "Mahabharata",
+      "category": "Rakshasa / Figure",
+      "description": "Forest demon (Hidimba) and related characters appearing in Bhima's narratives (Hidimbi wife).",
+      "notes": ""
+    },
+    "Ila": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Mythical Figure",
+      "description": "A legendary figure referenced across Puranic and epic traditions.",
+      "notes": ""
+    },
+    "Indra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "King of gods; spiritual father of Arjuna; appears in various episodes.",
+      "notes": ""
+    },
+    "Iravan": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Son",
+      "description": "Son of Aravan/Arjuna in some traditions; fought and died in war narratives.",
+      "notes": ""
+    },
+    "Janamejaya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Descendant",
+      "description": "Later descendant (of Arjuna) who appears in retellings; associated with Ramopakhyana lineage events.",
+      "notes": ""
+    },
+    "Janapadi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara",
+      "description": "An apsara who appears in origin stories of figures like Kripa and Kripi.",
+      "notes": ""
+    },
+    "Jara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Demoness",
+      "description": "A demoness figure in certain sub-stories resulting in the birth of Jarasandha.",
+      "notes": ""
+    },
+    "Jarasandha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Antagonist",
+      "description": "Powerful king of Magadha; appears in background tales and conflicts.",
+      "notes": ""
+    },
+    "Jaratkaru": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "Sage associated with family lineages and the birth of certain rishis.",
+      "notes": ""
+    },
+    "Jatasura": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Demon",
+      "description": "Demon who attacked Pandavas in exile and was killed by Bhima.",
+      "notes": ""
+    },
+    "Jayadratha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "King who played a role in Abhimanyu's death narratives; fought against Pandavas.",
+      "notes": ""
+    },
+    "Jayatsena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Figure",
+      "description": "A named warrior/prince in epic lists.",
+      "notes": ""
+    },
+    "Kadru": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Matriarch",
+      "description": "Mother of serpents (Nagas) in Puranic lineage; appears in Mahabharata references.",
+      "notes": ""
+    },
+    "Kalaratri": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "One of the navadurgas mentioned in epic visions/dream sequences.",
+      "notes": ""
+    },
+    "Kalki": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Avatar / Prophecy",
+      "description": "Future incarnation of Vishnu referenced in prophetic passages (Kali Yuga context).",
+      "notes": ""
+    },
+    "Kacha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi / Figure",
+      "description": "Sage figure appearing in tales tied to the Ashvins and other legends.",
+      "notes": ""
+    },
+    "Kamsa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Antagonist",
+      "description": "Name of an antagonist king in Krishna tradition; referenced in broader epic cross-links.",
+      "notes": ""
+    },
+    "Kanika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Counselor / Sage",
+      "description": "Sage/counselor of Hastinapur who advised Dhritarashtra in the Lac House episode.",
+      "notes": ""
+    },
+    "Karenumati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Queen",
+      "description": "Daughter of Chedi royal line; wife of Nakula and mother of Nirumitra in certain lists.",
+      "notes": ""
+    },
+    "Karna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Heroic Antagonist",
+      "description": "Born to Kunti and Surya but raised by Adhiratha and Radha; great warrior allied with Duryodhana.",
+      "notes": ""
+    },
+    "Kauravas": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Dynasty / Group",
+      "description": "Hundred sons of Dhritarashtra and Gandhari who oppose the Pandavas (list of names included in text).",
+      "notes": "Text lists many individual Kaurava names."
+    },
+    "Kauravya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Figure",
+      "description": "Father of Ulupi and grandfather of Iravan in specific genealogies.",
+      "notes": ""
+    },
+    "Kichaka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Chieftain",
+      "description": "Antagonist in Virata Parva who harassed Draupadi and was killed by Bhima.",
+      "notes": ""
+    },
+    "Kirmira": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Demon",
+      "description": "Demon encountered in Pandava exile episodes and slain by Bhima in many tellings.",
+      "notes": ""
+    },
+    "Kratha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "A Kshatriya king identified as reincarnation of Rahu in local episodes; fought for Kauravas in some accounts.",
+      "notes": ""
+    },
+    "Kripa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Guru / Warrior",
+      "description": "Royal teacher and warrior allied with Kauravas; elder brother of Kripi.",
+      "notes": ""
+    },
+    "Kripi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Consort",
+      "description": "Sister of Kripa; married to Dronacharya; mother in various genealogies.",
+      "notes": ""
+    },
+    "Krishna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Divine / Charioteer",
+      "description": "Incarnation of Vishnu; charioteer and guide of Arjuna; central to the Bhagavad Gita.",
+      "notes": ""
+    },
+    "Kritavarma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / King",
+      "description": "Yadava leader who fought for the Kauravas in the Kurukshetra War.",
+      "notes": ""
+    },
+    "Kunti-Bhoja": {
+      "aliases": ["Kuntibhoja"],
+      "source": "Mahabharata",
+      "category": "King / Foster-father",
+      "description": "Adoptive father of Kunti; ruler of Kunti kingdom who raised her in tradition.",
+      "notes": ""
+    },
+    "Kunti": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen / Mother",
+      "description": "Mother of the Pandavas; central maternal figure involved in divine births via mantras.",
+      "notes": ""
+    },
+    "Kuru": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Ancestor / Clan",
+      "description": "Eponymous ancestor of the Kuru dynasty; progenitor of Hastinapura lineages.",
+      "notes": ""
+    },
+    "Lakshmana Kumara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Mentioned as Lakshmana in Mahabharata lists; distinct from Ramayana Lakshmana.",
+      "notes": ""
+    },
+    "Lomasha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi / Wanderer",
+      "description": "A rishi who appears in wilderness narratives and travel episodes.",
+      "notes": ""
+    },
+    "Lopamudra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage's Consort",
+      "description": "Figure associated with rishi traditions referenced in epic materials.",
+      "notes": ""
+    },
+    "Madhavi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess figure appearing in lineage and svayamvara narratives.",
+      "notes": ""
+    },
+    "Madri": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Second wife of Pandu and mother of Nakula and Sahadeva.",
+      "notes": ""
+    },
+    "Manasa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Serpent goddess referenced in Puranic/epic passages.",
+      "notes": ""
+    },
+    "Manimat": {
+      "aliases": ["Maniman"],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King reborn as Vritra's son; fought for the Pandavas in Kurukshetra War.",
+      "notes": ""
+    },
+    "Markandeya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage",
+      "description": "Sage who narrates stories such as Nala and Damayanti in Vana Parva.",
+      "notes": ""
+    },
+    "Menaka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara",
+      "description": "Celestial apsara referenced in multiple Puranic/epic contexts.",
+      "notes": ""
+    },
+    "Muchukunda": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Kingly figure associated with ancient warrior lineages and boons.",
+      "notes": ""
+    },
+    "Nala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Hero",
+      "description": "Hero of Nalopakhyana referenced in Mahabharata's retellings.",
+      "notes": ""
+    },
+    "Nahusha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Ancestor figure elevated to Indra in some legends; appears in genealogies.",
+      "notes": ""
+    },
+    "Nakula": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Pandava",
+      "description": "Fourth Pandava brother; son of Madri and the Ashvins; skilled warrior and horseman.",
+      "notes": ""
+    },
+    "Nanda": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Family",
+      "description": "Name appears for rulers (e.g., foster family of Krishna) and other figures in epic lists.",
+      "notes": ""
+    },
+    "Nara-Narayana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Divine pair",
+      "description": "Divine sages appearing in Vedic/Puranic tradition; referenced in epic contexts.",
+      "notes": ""
+    },
+    "Narada": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Messenger",
+      "description": "Celestial sage and messenger; appears in many episodes across the epics.",
+      "notes": ""
+    },
+    "Narakasura": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Asura / Antagonist",
+      "description": "Demonic king figure referenced in Puranic tales appearing in epic cross-references.",
+      "notes": ""
+    },
+    "Niramitra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / Son",
+      "description": "Son of Nakula and Karenumati; minor genealogy entry.",
+      "notes": ""
+    },
+    "Padmavati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Follower / Figure",
+      "description": "Mentioned in Shalya Parva as follower of Kartikeya; minor character.",
+      "notes": ""
+    },
+    "Parashara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage",
+      "description": "Rishi and father of Vyasa; referenced in lineage and narrative contexts.",
+      "notes": ""
+    },
+    "Parashuram": {
+      "aliases": ["Parashurama"],
+      "source": "Mahabharata",
+      "category": "Avatar / Warrior Sage",
+      "description": "Avatar of Vishnu, warrior sage who appears in various epic narratives.",
+      "notes": ""
+    },
+    "Parikshit": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Descendant",
+      "description": "Descendant of the Pandavas; appears in continuation narratives.",
+      "notes": ""
+    },
+    "Pandu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Father of the Pandavas; husband of Kunti and Madri; central ancestor in the conflict.",
+      "notes": ""
+    },
+    "Pandya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Kingdom / Ally",
+      "description": "King of Pandya who allied with Pandavas and supplied troops in the war.",
+      "notes": ""
+    },
+    "Paurava": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King involved in Kurukshetra War episodes; reborn Asura Sarabha references.",
+      "notes": ""
+    },
+    "Prabha": {
+      "aliases": ["Indumati"],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Daughter of Asura Svarbhanu; married Ayu; mother of Nahusha in genealogies.",
+      "notes": ""
+    },
+    "Pradyumna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Prince",
+      "description": "Name tied to Yadava genealogy; appears in Puranic cross-references in epic lists.",
+      "notes": ""
+    },
+    "Pratipa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Ancient king referenced in genealogies (e.g., father of Shantanu).",
+      "notes": ""
+    },
+    "Prativindhya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Yudhishthira and Draupadi; leader of the Draupadeyas in later lists.",
+      "notes": ""
+    },
+    "Prishati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Chief queen of Drupada and mother of Draupadi and Dhrishtadyumna in the yajna account.",
+      "notes": ""
+    },
+    "Purochana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Architect / Antagonist",
+      "description": "Builder of Lakshagraha who set the fire; killed by Bhima when plot discovered.",
+      "notes": "Associated with the lac house conspiracy."
+    },
+    "Pururavas": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Ancestor",
+      "description": "Ancient king whose lineage appears in epic genealogies.",
+      "notes": ""
+    },
+    "Radha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Foster-mother",
+      "description": "Foster mother of Karna and wife of Adhiratha who raised Karna as her son.",
+      "notes": ""
+    },
+    "Ramopakhyana characters": {
+      "aliases": ["Ramopakhyana"],
+      "source": "Mahabharata",
+      "category": "Embedded Narrative",
+      "description": "The Mahabharata contains an abridged retelling of the Ramayana; names like Rama, Sita, Lakshmana, Ravana appear here.",
+      "notes": ""
+    },
+    "Revati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess figure appearing in epic genealogies and mythology.",
+      "notes": ""
+    },
+    "Rohini": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen / Wife",
+      "description": "Wife of Vasudeva; mother of significant Yadava offspring in Krishna's lineage.",
+      "notes": ""
+    },
+    "Rochamana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Kshatriya king who fought for Pandavas and was killed by Karna in Kurukshetra War.",
+      "notes": ""
+    },
+    "Rukmi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / King",
+      "description": "Brother of Rukmini; has roles in Krishna/Rukmini narratives and allied episodes.",
+      "notes": ""
+    },
+    "Rukmini": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Queen",
+      "description": "Consort of Krishna; appears in Yadava line references.",
+      "notes": ""
+    },
+    "Ruru": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "Rishi mentioned in epic narratives; father of Sunaka in lists.",
+      "notes": ""
+    },
+    "Sahadeva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Pandava",
+      "description": "Youngest Pandava brother; son of Madri and the Ashvins; known for wisdom and astrology in some tellings.",
+      "notes": ""
+    },
+    "Sakradeva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Crown prince of Kalinga who fought and was killed by Bhima.",
+      "notes": ""
+    },
+    "Samba": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Krishna; appears in post-war Yadava narratives and later histories.",
+      "notes": ""
+    },
+    "Samudrasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "A king defeated by Bhima during conquests and later killed in the Kurukshetra War.",
+      "notes": ""
+    },
+    "Shamika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage",
+      "description": "Sage involved in Parikshit's tale; his son Sringin and curse episodes appear in narrative.",
+      "notes": ""
+    },
+    "Shiva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "Supreme deity (part of Trimurti) referenced throughout epic contexts.",
+      "notes": ""
+    },
+    "Shri": {
+      "aliases": ["Lakshmi"],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Divine feminine principle; used in contexts like Lakshmi and Draupadi associations.",
+      "notes": ""
+    },
+    "Samvarana": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Ancestor / King",
+      "description": "Ancestor figure in Kuru lineage mentioned in genealogies.",
+      "notes": ""
+    },
+    "Sanjaya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Herald / Narrator",
+      "description": "Charioteer/attendant who narrates the battle to Dhritarashtra (visionary narrator).",
+      "notes": ""
+    },
+    "Sarama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Divine/ Figure",
+      "description": "Divine hound or figure appearing in mythic contexts; appears in epic references.",
+      "notes": ""
+    },
+    "Sarasvati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Goddess of knowledge and speech; referenced in Mahabharata passages.",
+      "notes": ""
+    },
+    "Satyabhama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Consort",
+      "description": "Consort of Krishna appearing in Yadava narratives and later references.",
+      "notes": ""
+    },
+    "Satyajit": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "One of Drupada's sons; listed among the Panchala nobles.",
+      "notes": ""
+    },
+    "Satyaki": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Yadava",
+      "description": "Valiant Yadava warrior allied with the Pandavas in the Kurukshetra War.",
+      "notes": ""
+    },
+    "Satyavati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen / Ancestor",
+      "description": "Mother of Vyasa; grandmother of Pandu and Dhritarashtra; key matriarch in Kuru line.",
+      "notes": ""
+    },
+    "Savitri (goddess)": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Consort of Brahma referenced in classical tales such as Savitri and Satyavan.",
+      "notes": ""
+    },
+    "Savitri and Satyavan": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Tale / Characters",
+      "description": "Famous tale referenced within epic tradition; Savitri pleads for her husband's life from Yama.",
+      "notes": ""
+    },
+    "Senavindu": {
+      "aliases": ["Senabindu"],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King mentioned as a warrior who was defeated by Arjuna during digvijaya.",
+      "notes": ""
+    },
+    "Shachi": {
+      "aliases": ["Indrani"],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Consort of Indra (also called Indrani); appears in divine catalogues.",
+      "notes": ""
+    },
+    "Shakuni": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Uncle / Strategist",
+      "description": "Maternal uncle of the Kauravas; master manipulator and prime instigator of many plots.",
+      "notes": ""
+    },
+    "Shakuntala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Heroine / Tale",
+      "description": "Heroine of Shakuntala/Dushyanta story referenced in epic tradition.",
+      "notes": ""
+    },
+    "Shalva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Shalva who sought Amba and appears in conflicts following Bhishma's svayamvara.",
+      "notes": ""
+    },
+    "Shalya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Commander",
+      "description": "King of Madra who fights on Kaurava side as commander; has three sons named in lists.",
+      "notes": ""
+    },
+    "Sons of Shalya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princes",
+      "description": "Madranjaya, Rukmanagada, and Rukmanaratha — sons of Shalya who fought and died in the war.",
+      "notes": ""
+    },
+    "Shankha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Third son of King Virata; killed by Bhishma in the Kurukshetra war.",
+      "notes": ""
+    },
+    "Shantanu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Ancestor",
+      "description": "King of Hastinapura; father of Bhishma; central ancestor in Kuru dynasty stories.",
+      "notes": ""
+    },
+    "Sharmishtha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess connected to Yayati/Shukra narratives; appears in Puranic/epic cross references.",
+      "notes": ""
+    },
+    "Shatanika": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Nakula and Draupadi (a Draupadeya) mentioned in descendant lists.",
+      "notes": ""
+    },
+    "Shaunaka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Scholar",
+      "description": "Headed sages during sacrifice where Ugrashravas recited the Mahabharata.",
+      "notes": ""
+    },
+    "Shikhandi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Reborn",
+      "description": "Reborn Amba (in many tellings); instrumental in Bhishma's fall during the war.",
+      "notes": ""
+    },
+    "Shishupala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King who opposed Krishna; killed by Krishna during Rajasuya context in some accounts.",
+      "notes": ""
+    },
+    "Sons of Shishupala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princes",
+      "description": "Four sons including Dhrishtaketu, Mahipala, Suketu, Sarabha; appear in battle lists.",
+      "notes": ""
+    },
+    "Shrutakarma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Arjuna and Draupadi; youngest among Draupadeyas in lists.",
+      "notes": ""
+    },
+    "Shrutasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Sahadeva and Draupadi; listed among Draupadeyas.",
+      "notes": ""
+    },
+    "Shrutayudha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "A warrior mentioned in epic lists (see main article).",
+      "notes": ""
+    },
+    "Shukra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Preceptor",
+      "description": "Preceptor of the asuras; father of Devayani; features in earlier myths referenced in epic.",
+      "notes": ""
+    },
+    "Shveta": {
+      "aliases": ["Shvetavarman"],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Second son of Virata killed early in the Kurukshetra war by Bhishma.",
+      "notes": ""
+    },
+    "Shvetaki": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King who performed yajnas; related to the Khandava Dahana episode.",
+      "notes": ""
+    },
+    "Shreniman": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Kumaradesa who fought for the Pandavas and was killed by Drona.",
+      "notes": ""
+    },
+    "Subala": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Father",
+      "description": "King of Gandhara; father of Shakuni and Gandhari.",
+      "notes": ""
+    },
+    "Subhadra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess / Queen",
+      "description": "Sister of Krishna; wife of Arjuna and mother of Abhimanyu.",
+      "notes": ""
+    },
+    "Sudakshina": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "King who appears among supporting allies in the epic's battle lists.",
+      "notes": ""
+    },
+    "Sudeshna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Queen",
+      "description": "Queen of Matsya who appears in Virata Parva narratives.",
+      "notes": ""
+    },
+    "Sunaka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / Sage",
+      "description": "Son of Ruru and Pramadvara; member of Yudhishthira's assembly.",
+      "notes": ""
+    },
+    "Surya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity / Sun",
+      "description": "Sun god; invoked by Kunti to beget Karna; appears in multiple epic episodes.",
+      "notes": ""
+    },
+    "Susharma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Trigarta who supported the Kauravas and was killed by Arjuna.",
+      "notes": ""
+    },
+    "Sutasoma": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Bhima and Draupadi; listed among Draupadeyas.",
+      "notes": ""
+    },
+    "Svaha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Goddess associated with sacrificial offerings; noted in lists.",
+      "notes": ""
+    },
+    "Takshaka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Naga / Serpent King",
+      "description": "King of snakes; involved in later tales such as Parikshit's death.",
+      "notes": ""
+    },
+    "Tapati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess / River deity",
+      "description": "River goddess mentioned in epic mythic references.",
+      "notes": ""
+    },
+    "Tilottama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara / Divine beauty",
+      "description": "A celestial apsara famed for beauty; figures in mythic lists and episodes.",
+      "notes": ""
+    },
+    "Tara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Goddess / Queen",
+      "description": "Name shared by multiple figures (e.g., Tara the vanara queen in Ramayana tradition and other Taras in Puranic stories); present in Mahabharata references.",
+      "notes": ""
+    },
+    "Ugrasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of the Yadavas in later Krishna narratives; appears in Yadava genealogies.",
+      "notes": ""
+    },
+    "Ugrashravas Sauti": {
+      "aliases": ["Ugrashravas"],
+      "source": "Mahabharata",
+      "category": "Reciter / Storyteller",
+      "description": "The bard/scholar who recites the Mahabharata to sages; central framing narrator.",
+      "notes": ""
+    },
+    "Uluka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Messenger / Warrior",
+      "description": "Son of Shakuni; acted as messenger/commander for Kaurava side in some episodes.",
+      "notes": ""
+    },
+    "Ulupi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Naga Princess",
+      "description": "Naga princess who married Arjuna and bore Iravan in some versions.",
+      "notes": ""
+    },
+    "Uma": {
+      "aliases": ["Parvati"],
+      "source": "Mahabharata",
+      "category": "Goddess",
+      "description": "Consort of Shiva (Parvati); appears in mythic cross-references within epic.",
+      "notes": ""
+    },
+    "Uparichara Vasu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King whose legend is recounted in Vedic/Puranic traditions and referenced in epic genealogies.",
+      "notes": ""
+    },
+    "Urvashi": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Apsara",
+      "description": "Celestial nymph whose interactions with kings and sages appear in different tales referenced by the epic.",
+      "notes": ""
+    },
+    "Ushinara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of the Bhojas referenced among allies and genealogies.",
+      "notes": ""
+    },
+    "Uttamaujas": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior / Prince",
+      "description": "Warrior who serves Pandava side; appears in Kurukshetra battle lists.",
+      "notes": ""
+    },
+    "Uttanka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage",
+      "description": "Rishi figure appearing in narrative and parable sequences.",
+      "notes": ""
+    },
+    "Uttara": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / Princess",
+      "description": "Name used for multiple figures (e.g., son of Virata in Virata Parva; also name of princess Uttarā who marries Abhimanyu).",
+      "notes": ""
+    },
+    "Uttarā": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess of Virata; wife of Abhimanyu and mother of Parikshit in many accounts.",
+      "notes": ""
+    },
+    "Vajra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Heir",
+      "description": "Son of Aniruddha; later crowned in Indraprastha lineage in post-war retellings.",
+      "notes": ""
+    },
+    "Vapusthama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Princess of Kashi; descendant of Bhima; married into Janamejaya's line in some tales.",
+      "notes": ""
+    },
+    "Varaha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Avatar / Deity",
+      "description": "Boar-incarnation of Vishnu referenced in Vana Parva narratives.",
+      "notes": ""
+    },
+    "Varuna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "God of waters; appears in mythic and ritual references in the epic.",
+      "notes": ""
+    },
+    "Vasishtha": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi",
+      "description": "Royal sage and spiritual advisor referenced across epic tradition.",
+      "notes": ""
+    },
+    "Vasudeva": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Patriarch / King",
+      "description": "Father of Krishna; appears in Yadava genealogies and Krishna narratives.",
+      "notes": ""
+    },
+    "Vayu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity / Wind",
+      "description": "God of wind; spiritual father of Bhima and Hanuman in lore; invoked in epic genealogies.",
+      "notes": ""
+    },
+    "Virabhadra": {
+      "aliases": ["Veerabhadra"],
+      "source": "Mahabharata",
+      "category": "Fierce Deity",
+      "description": "Fierce form of Shiva who destroys Daksha's yajna; referenced in Shanti Parva.",
+      "notes": ""
+    },
+    "Vichitravirya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Hastinapura; brother of Chitrangada and father figure in Kuru lineage stories.",
+      "notes": ""
+    },
+    "Vidura": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Minister / Wise Man",
+      "description": "Half-brother of Dhritarashtra and prime minister of Hastinapura; moral advisor figure.",
+      "notes": ""
+    },
+    "Vidura's wife": {
+      "aliases": ["Sulabha"],
+      "source": "Mahabharata",
+      "category": "Consort",
+      "description": "Wife of Vidura (Sulabha in later versions) noted for piety and devotion; appears in Krishna visit anecdotes.",
+      "notes": ""
+    },
+    "Vijayā": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Princess",
+      "description": "Daughter of Dyutimata of Madra; wife of Sahadeva in some accounts.",
+      "notes": ""
+    },
+    "Vikarna": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Kaurava / Prince",
+      "description": "One of the Kaurava princes; noted for moral questioning among Kauravas in some versions.",
+      "notes": ""
+    },
+    "Vinata": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Matriarch",
+      "description": "Mother of Garuda in Puranic tradition; appears in epic reference lists.",
+      "notes": ""
+    },
+    "Vinda and Anuvinda": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Kings / Warriors",
+      "description": "Twin kings of Avanti who fought on the Kaurava side in Kurukshetra war.",
+      "notes": ""
+    },
+    "Virata": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "King of Matsya who hosted the Pandavas during their incognito year; father of Uttarā.",
+      "notes": ""
+    },
+    "Virini": {
+      "aliases": ["Asikni"],
+      "source": "Mahabharata",
+      "category": "Goddess / Figure",
+      "description": "Goddess figure referenced in some Puranic/epic lists.",
+      "notes": ""
+    },
+    "Vishnu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity",
+      "description": "Supreme preserver deity; Krishna is his incarnation in the epic.",
+      "notes": ""
+    },
+    "Vishoka": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Charioteer",
+      "description": "Charioteer of Bhima during the Kurukshetra War as per lists.",
+      "notes": ""
+    },
+    "Vishvamitra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Rishi / Former King",
+      "description": "Sage who was once a king; appears in multiple epic episodes and lineages.",
+      "notes": ""
+    },
+    "Vrihanta": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Warrior",
+      "description": "Named king/warrior in epic lists and battle accounts.",
+      "notes": ""
+    },
+    "Vridhakshtra": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King",
+      "description": "Former king of Singhu; father of Jayadratha and Vijayadratha; later became a rishi in some tales.",
+      "notes": ""
+    },
+    "Vrishaketu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Karna who survives into later lineages after the war in many retellings.",
+      "notes": ""
+    },
+    "Vrishasena": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Karna who fought in the Kurukshetra War and was killed.",
+      "notes": ""
+    },
+    "Vyasa": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Sage / Author",
+      "description": "Veda Vyasa, traditionally credited with composing the Mahabharata; central sage in the text.",
+      "notes": ""
+    },
+    "Yama": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Deity / Dharma",
+      "description": "God of death and Dharma; spiritual father of Yudhishthira and appears in the Yaksha tales.",
+      "notes": ""
+    },
+    "Yaudheya": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince",
+      "description": "Son of Yudhishthira and Devika; appears in later genealogical lists and Purana cross-references.",
+      "notes": ""
+    },
+    "Yayati": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "King / Ancestor",
+      "description": "Ancestor king referenced across Puranic genealogies and epic tradition.",
+      "notes": ""
+    },
+    "Yudhamanyu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Warrior",
+      "description": "Warrior mentioned in epic lists; one of the heroes in expansion narratives.",
+      "notes": ""
+    },
+    "Yudhishthira": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Pandava / King",
+      "description": "Eldest Pandava brother; known for adherence to dharma and later king of Indraprastha/Hastinapura.",
+      "notes": ""
+    },
+    "Yuyutsu": {
+      "aliases": [],
+      "source": "Mahabharata",
+      "category": "Prince / Son",
+      "description": "Son of Dhritarashtra by a maid; sided with Pandavas and survived the war in many tellings.",
+      "notes": ""
+    }
+  }
+} 
