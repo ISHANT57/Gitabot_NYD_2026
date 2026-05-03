@@ -18,7 +18,11 @@ build/
 .venv
 venv/
 ENV/
-
+.local/
+node_modules/
+.env
+dist/
+build/
 # IDE
 .vscode/
 .idea/

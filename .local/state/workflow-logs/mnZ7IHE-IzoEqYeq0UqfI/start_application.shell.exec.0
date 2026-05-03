@@ -1,9 +1,0 @@
-[2026-05-02 05:16:08 +0000] [1310] [INFO] Starting gunicorn 25.3.0
-[2026-05-02 05:16:08 +0000] [1310] [INFO] Listening at:  (1310)
-[2026-05-02 05:16:08 +0000] [1310] [INFO] Using worker: sync
-[2026-05-02 05:16:08 +0000] [1321] [INFO] Booting worker with pid: 1321
-[2026-05-02 05:16:08 +0000] [1321] [WARNING] Reloader is on. Use in development only!
-[2026-05-02 05:16:09 +0000] [1310] [INFO] Control socket listening at /home/runner/.gunicorn/gunicorn.ctl
-DEBUG:faiss.loader:Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
-INFO:faiss.loader:Loading faiss with AVX512 support.
-INFO:faiss.loader:Successfully loaded faiss with AVX512 support.
