@@ -2,7 +2,6 @@ import logging
 import time
 from typing import List, Dict, Any, Optional
 from services.api_client import APIClient
-from services.vector_store import VectorStore
 from services.faiss_vector_store import FaissVectorStore
 from services.document_processor import DocumentProcessor
 from utils.text_utils import TextNormalizer
@@ -13,11 +12,8 @@ class RAGService:
     def __init__(self):
         self.api_client = APIClient()
         
-        # Try Qdrant first, fallback to FAISS
-        self.vector_store = VectorStore()
-        if not self.vector_store.is_available:
-            logger.info("Qdrant not available, using FAISS vector store")
-            self.vector_store = FaissVectorStore()
+        self.vector_store = FaissVectorStore()
+        logger.info("Using FAISS vector store")
         
         self.doc_processor = DocumentProcessor()
         self.normalizer = TextNormalizer()
