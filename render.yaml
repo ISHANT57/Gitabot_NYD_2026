@@ -3,8 +3,12 @@ services:
     name: dharmabot
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind=0.0.0.0:$PORT --workers=1 --preload --timeout=300 --keep-alive=5 main:app
+    startCommand: python download_index.py && gunicorn --bind=0.0.0.0:$PORT --workers=1 --preload --timeout=300 --keep-alive=5 main:app
     envVars:
+      - key: HF_REPO_ID
+        sync: false          # Set this to: your-hf-username/dharmabot-index
+      - key: HF_TOKEN
+        sync: false          # Only needed if your HF dataset repo is private
       - key: OPENROUTER_API_KEY
         sync: false
       - key: MISTRAL_API_KEY
@@ -14,4 +18,3 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
     healthCheckPath: /api/stats
-    plan: starter
