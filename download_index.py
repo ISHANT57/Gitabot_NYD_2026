@@ -8,7 +8,7 @@ import sys
 import time
 
 FAISS_FILE = "vector_index.faiss"
-META_FILE  = "metadata.json"
+META_FILE  = "metadata.db"   # SQLite metadata store (disk-backed, low memory)
 REQUIRED   = [FAISS_FILE, META_FILE]
 
 

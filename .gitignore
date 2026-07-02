@@ -1,6 +1,7 @@
 # FAISS index — large files, stored on HuggingFace, downloaded at runtime
 vector_index.faiss
 metadata.json
+metadata.db
 
 # Python
 __pycache__/

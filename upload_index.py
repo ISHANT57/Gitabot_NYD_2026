@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-FILES = ["vector_index.faiss", "metadata.json"]
+FILES = ["vector_index.faiss", "metadata.db"]
 
 
 def main():

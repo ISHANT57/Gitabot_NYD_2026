@@ -94,9 +94,12 @@ python main.py   # serves on http://localhost:5000  (override with PORT)
 
 ## The Vector Index
 
-The index (`vector_index.faiss` + `metadata.json`, ~230 MB) is **not** committed to git.
+The index (`vector_index.faiss` + `metadata.db`, ~97 MB total) is **not** committed to git.
 It is stored on a HuggingFace dataset repo and pulled at deploy time.
 
+- The FAISS index uses **8-bit scalar quantization** (~45 MB) and metadata lives in an
+  on-disk **SQLite** database, so the serving process stays around ~120 MB RAM and fits
+  a 512 MB (free) instance.
 - **Publish** a freshly built index: `python upload_index.py` (needs `HF_TOKEN` with write access).
 - **Download** happens automatically on deploy via `download_index.py`.
 
@@ -108,8 +111,8 @@ It is stored on a HuggingFace dataset repo and pulled at deploy time.
 The repo includes `render.yaml` (Blueprint). Steps:
 
 1. **New → Web Service** and connect this GitHub repo; Render auto-detects `render.yaml`.
-2. **Instance type: Standard (2 GB RAM) or larger.** The index loads fully into memory
-   (~1.3 GB); the 512 MB Free/Starter tiers will OOM on boot.
+2. **Instance type: Free (512 MB) works** thanks to the quantized index + SQLite metadata
+   (serving footprint ~120 MB). A paid always-on tier avoids cold-start re-downloads.
 3. Set the secret env vars (marked `sync: false`) in the dashboard:
    `MISTRAL_API_KEY`, `GEMINI_API_KEY` (and `GEMINI_MODEL=gemini-2.5-flash`).
    Set `HF_TOKEN` only if the index repo is private.

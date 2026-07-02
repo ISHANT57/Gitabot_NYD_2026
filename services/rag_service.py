@@ -3,7 +3,6 @@ import time
 from typing import List, Dict, Any, Optional
 from services.api_client import APIClient
 from services.faiss_vector_store import FaissVectorStore
-from services.document_processor import DocumentProcessor
 from utils.text_utils import TextNormalizer
 from config import Config
 
@@ -17,8 +16,18 @@ class RAGService:
         self.vector_store = FaissVectorStore()
         logger.info("Using FAISS vector store")
 
-        self.doc_processor = DocumentProcessor()
+        # DocumentProcessor (and its heavy pandas dependency) is only needed when
+        # building the index, so it is imported lazily to keep the serving
+        # process lightweight. See _get_doc_processor().
+        self.doc_processor = None
         self.normalizer = TextNormalizer()
+
+    def _get_doc_processor(self):
+        """Lazily construct the DocumentProcessor (imports pandas) on first use."""
+        if self.doc_processor is None:
+            from services.document_processor import DocumentProcessor
+            self.doc_processor = DocumentProcessor()
+        return self.doc_processor
     
     def initialize_database(self, force_reload: bool = False):
         """Initialize the vector database with documents"""
@@ -35,7 +44,7 @@ class RAGService:
             
             # Process all documents
             logger.info("Processing documents...")
-            documents = self.doc_processor.process_all_files()
+            documents = self._get_doc_processor().process_all_files()
             
             if not documents:
                 logger.warning("No documents found to process")
