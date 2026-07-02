@@ -185,21 +185,35 @@ Answer directly with facts only, without mentioning sources or locations."""
             "generationConfig": {"temperature": 0.4, "maxOutputTokens": 1200},
         }
 
-        # Retry on transient errors (429 rate limit, 500/503 server overload) with backoff.
-        transient = {429, 500, 502, 503, 504}
-        max_retries = 4
-        last_exc = None
+        # Keep total added latency small — this runs inside a web request, so a long
+        # blocking retry loop would tie up the worker and stall other requests.
+        # - 5xx server overload: retry briefly (usually recovers).
+        # - 429: could be a short per-minute limit OR an exhausted daily quota. Retrying
+        #   a daily-quota 429 is futile and would just block, so we try at most once quickly.
+        server_errors = {500, 502, 503, 504}
+        max_retries = 3
         for attempt in range(max_retries):
             try:
-                response = requests.post(url, headers=headers, json=data, timeout=60)
-                if response.status_code in transient:
-                    wait_time = (2 ** attempt) * 2  # 2s, 4s, 8s, 16s
-                    logger.warning(
-                        f"Gemini transient {response.status_code}, waiting {wait_time}s "
-                        f"(retry {attempt + 1}/{max_retries})"
-                    )
-                    time.sleep(wait_time)
-                    continue
+                response = requests.post(url, headers=headers, json=data, timeout=30)
+
+                if response.status_code == 429:
+                    if attempt == 0:
+                        logger.warning("Gemini 429 (rate/quota), one quick retry in 1s")
+                        time.sleep(1)
+                        continue
+                    logger.error("Gemini 429 persists — quota likely exhausted; giving up fast")
+                    raise RuntimeError("Gemini rate limit / quota exhausted")
+
+                if response.status_code in server_errors:
+                    if attempt < max_retries - 1:
+                        wait_time = attempt + 1  # 1s, 2s
+                        logger.warning(
+                            f"Gemini {response.status_code}, retrying in {wait_time}s "
+                            f"({attempt + 1}/{max_retries})"
+                        )
+                        time.sleep(wait_time)
+                        continue
+                    raise RuntimeError(f"Gemini server error {response.status_code}")
 
                 response.raise_for_status()
                 result = response.json()
@@ -214,11 +228,11 @@ Answer directly with facts only, without mentioning sources or locations."""
                 return text
 
             except requests.exceptions.RequestException as e:
-                last_exc = e
                 if attempt < max_retries - 1:
-                    time.sleep((2 ** attempt) * 2)
+                    time.sleep(attempt + 1)
                     continue
                 raise
+        raise RuntimeError("Gemini unavailable after retries")
 
         # Exhausted retries on transient status codes
         raise RuntimeError(f"Gemini unavailable after {max_retries} attempts (last status transient)")
