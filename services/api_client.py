@@ -18,6 +18,7 @@ class APIClient:
         self.mistral_api_key = self.config.MISTRAL_API_KEY
         self.openrouter_api_key = self.config.OPENROUTER_API_KEY
         self.gemini_api_key = self.config.GEMINI_API_KEY
+        self.groq_api_key = self.config.GROQ_API_KEY
 
     def _mistral_key_valid(self) -> bool:
         """True only when a real Mistral key is configured (not the placeholder)."""
@@ -116,6 +117,9 @@ class APIClient:
             embedding.extend(embedding[:min(len(embedding), EMBED_DIM - len(embedding))])
         return embedding[:EMBED_DIM]
 
+    def _groq_key_valid(self) -> bool:
+        return bool(self.groq_api_key) and self.groq_api_key != "default_groq_key"
+
     def _gemini_key_valid(self) -> bool:
         return bool(self.gemini_api_key) and self.gemini_api_key != "default_gemini_key"
 
@@ -145,29 +149,73 @@ Answer directly with facts only, without mentioning sources or locations."""
     def generate_answer(self, question: str, context: str) -> str:
         """Generate an answer from the retrieved context.
 
-        Primary provider is Google Gemini; falls back to OpenRouter (Mixtral) if a
-        Gemini key is not configured or the Gemini call fails.
+        Tries configured providers in order (Groq -> Gemini -> OpenRouter), moving
+        on to the next if one has no key or fails. Groq is primary because of its
+        fast, generous free tier.
         """
-        if self._gemini_key_valid():
+        providers = [
+            ("Groq", self._groq_key_valid, self._generate_answer_groq),
+            ("Gemini", self._gemini_key_valid, self._generate_answer_gemini),
+            ("OpenRouter", self._openrouter_key_valid, self._generate_answer_openrouter),
+        ]
+
+        any_key = False
+        for name, key_valid, generate in providers:
+            if not key_valid():
+                continue
+            any_key = True
             try:
-                return self._generate_answer_gemini(question, context)
+                return generate(question, context)
             except Exception as e:
-                logger.error(f"Gemini answer generation failed: {e}")
-                if self._openrouter_key_valid():
-                    logger.info("Falling back to OpenRouter for answer generation")
-                    try:
-                        return self._generate_answer_openrouter(question, context)
-                    except Exception as e2:
-                        logger.error(f"OpenRouter fallback also failed: {e2}")
-        elif self._openrouter_key_valid():
-            try:
-                return self._generate_answer_openrouter(question, context)
-            except Exception as e:
-                logger.error(f"Error generating answer with OpenRouter: {e}")
-        else:
-            logger.error("No answer-generation key configured (need GEMINI_API_KEY or OPENROUTER_API_KEY)")
+                logger.error(f"{name} answer generation failed: {e}")
+                continue
+
+        if not any_key:
+            logger.error("No answer-generation key configured (set GROQ_API_KEY, GEMINI_API_KEY, or OPENROUTER_API_KEY)")
 
         return "I'm unable to generate an answer right now because the AI service is temporarily unavailable. Please try again in a few moments, or check if there are relevant verses in the database that might help with your question."
+
+    def _generate_answer_groq(self, question: str, context: str) -> str:
+        """Generate an answer using Groq (OpenAI-compatible chat completions API)."""
+        url = "https://api.groq.com/openai/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.groq_api_key}",
+            "Content-Type": "application/json",
+        }
+        data = {
+            "model": self.config.GROQ_MODEL,
+            "messages": [
+                {"role": "system", "content": self._SYSTEM_PROMPT},
+                {"role": "user", "content": self._build_user_prompt(question, context)},
+            ],
+            "temperature": 0.4,
+            "max_tokens": 1200,
+        }
+
+        server_errors = {500, 502, 503, 504}
+        max_retries = 3
+        for attempt in range(max_retries):
+            response = requests.post(url, headers=headers, json=data, timeout=30)
+
+            if response.status_code == 429:
+                if attempt == 0:
+                    logger.warning("Groq 429 (rate limit), one quick retry in 1s")
+                    time.sleep(1)
+                    continue
+                raise RuntimeError("Groq rate limit / quota exhausted")
+
+            if response.status_code in server_errors and attempt < max_retries - 1:
+                time.sleep(attempt + 1)
+                continue
+
+            response.raise_for_status()
+            result = response.json()
+            text = result["choices"][0]["message"]["content"].strip()
+            if not text:
+                raise ValueError(f"Groq returned empty content: {result}")
+            return text
+
+        raise RuntimeError("Groq unavailable after retries")
 
     def _generate_answer_gemini(self, question: str, context: str) -> str:
         """Generate an answer using Google Gemini."""

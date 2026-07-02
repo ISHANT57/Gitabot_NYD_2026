@@ -12,11 +12,16 @@ services:
       # Embeddings — REQUIRED (used to embed every query at runtime, not just at build)
       - key: MISTRAL_API_KEY
         sync: false
-      # Answer generation — primary provider
+      # Answer generation — primary provider (Groq: fast, generous free tier)
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      # Answer generation — fallback provider
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
-        value: gemini-2.5-flash   # 2.0-flash is quota-capped to 0 on the current key
+        value: gemini-2.5-flash
       # Answer generation — optional fallback (leave unset if you have no key)
       - key: OPENROUTER_API_KEY
         sync: false

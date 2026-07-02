@@ -9,6 +9,7 @@ class Config:
     MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY", "default_mistral_key")
     OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "default_openrouter_key")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "default_gemini_key")
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "default_groq_key")
     
     # Vector Database Configuration
     QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
@@ -23,7 +24,8 @@ class Config:
     # Model Configuration
     EMBEDDING_MODEL = "mistral-embed"
     LLM_MODEL = "mistralai/mixtral-8x7b-instruct"  # OpenRouter fallback model
-    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")  # primary answer-generation model
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")  # answer-generation fallback
+    GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")  # primary answer-generation model
     
     # Data Files
     DATA_DIR = "attached_assets"
