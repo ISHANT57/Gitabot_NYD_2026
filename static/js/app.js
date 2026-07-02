@@ -229,6 +229,8 @@ async function loadStats() {
     const online = (d.total_documents ?? 0) > 0;
     statusDot.className = 'status-dot ' + (online ? 'online' : 'offline');
     statusText.textContent = online ? `${(d.total_documents).toLocaleString()} docs` : 'Empty DB';
+    const chip = document.getElementById('docCountChip');
+    if (chip) chip.textContent = online ? `${(d.total_documents).toLocaleString()} Documents` : 'Empty DB — Initialize';
   } catch {
     statusDot.className = 'status-dot offline';
     statusText.textContent = 'Offline';
@@ -303,10 +305,11 @@ clearChat.addEventListener('click', () => {
       <span class="chip">Bhagavad Gita</span>
       <span class="chip">Ramayana</span>
       <span class="chip">Mahabharata</span>
-      <span class="chip">45,784 Documents</span>
+      <span class="chip" id="docCountChip">Loading…</span>
     </div>
     <p class="welcome-desc">Ask questions about characters, verses, philosophical concepts, or the teachings of these sacred epics.</p>`;
   messagesEl.appendChild(card);
+  loadStats();
 });
 
 // Filter

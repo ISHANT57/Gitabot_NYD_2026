@@ -14,6 +14,11 @@ def index():
     """Serve the main web app"""
     return render_template('index.html')
 
+@main_bp.route('/.well-known/appspecific/com.chrome.devtools.json')
+def chrome_devtools_probe():
+    """Chrome DevTools auto-probes this path; return empty 204 to avoid a noisy 404."""
+    return ('', 204)
+
 @main_bp.route('/api/search', methods=['POST'])
 def api_search():
     """API endpoint for searching and answering questions"""

@@ -135,6 +135,29 @@ class FaissVectorStore:
             logger.error(f"Error searching vector store: {e}")
             return []
     
+    def get_by_verse_id(self, chapter: str, verse: str) -> Optional[Dict[str, Any]]:
+        """Deterministically look up a verse by chapter/verse via a metadata scan.
+
+        Reliable and cheap — unlike a semantic search, it always returns the exact
+        verse if it was indexed, regardless of embedding quality.
+        """
+        verse_id = f"{chapter}.{verse}"
+        for m in self.metadata:
+            meta = m.get("metadata", {}) or {}
+            if (meta.get("verse_id") == verse_id or
+                    (str(m.get("chapter")) == str(chapter) and str(m.get("verse")) == str(verse))):
+                return {
+                    "text": m.get("text", ""),
+                    "source": m.get("source", ""),
+                    "chapter": m.get("chapter", ""),
+                    "verse": m.get("verse", ""),
+                    "sanskrit": m.get("sanskrit", ""),
+                    "translation": m.get("translation", ""),
+                    "explanation": m.get("explanation", ""),
+                    "metadata": meta,
+                }
+        return None
+
     def get_collection_info(self) -> Dict[str, Any]:
         """Get information about the collection"""
         return {

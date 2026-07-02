@@ -5,16 +5,18 @@ from services.api_client import APIClient
 from services.faiss_vector_store import FaissVectorStore
 from services.document_processor import DocumentProcessor
 from utils.text_utils import TextNormalizer
+from config import Config
 
 logger = logging.getLogger(__name__)
 
 class RAGService:
     def __init__(self):
+        self.config = Config()
         self.api_client = APIClient()
-        
+
         self.vector_store = FaissVectorStore()
         logger.info("Using FAISS vector store")
-        
+
         self.doc_processor = DocumentProcessor()
         self.normalizer = TextNormalizer()
     
@@ -39,21 +41,14 @@ class RAGService:
                 logger.warning("No documents found to process")
                 return
             
-            # Generate embeddings for all documents (using hash-based for bulk loading)
-            logger.info("Generating embeddings for bulk loading...")
-            for i, doc in enumerate(documents):
-                try:
-                    # Use hash-based embeddings for bulk loading to avoid rate limits
-                    embedding = self.api_client.get_embedding(doc["text"], use_api=False)
-                    doc["embedding"] = embedding
-                    
-                    if (i + 1) % 1000 == 0:
-                        logger.info(f"Generated embeddings for {i + 1}/{len(documents)} documents")
-                        
-                except Exception as e:
-                    logger.error(f"Error generating embedding for document {i}: {e}")
-                    continue
-            
+            # Generate real embeddings for all documents (batched via the Mistral API).
+            # Index and query must use the SAME embedding method or search is meaningless.
+            logger.info(f"Generating embeddings for {len(documents)} documents (batched)...")
+            texts = [doc["text"] for doc in documents]
+            embeddings = self.api_client.get_embeddings(texts, use_api=True)
+            for doc, embedding in zip(documents, embeddings):
+                doc["embedding"] = embedding
+
             # Filter out documents without embeddings
             valid_documents = [doc for doc in documents if "embedding" in doc]
             logger.info(f"Generated embeddings for {len(valid_documents)} documents")
@@ -92,12 +87,18 @@ class RAGService:
                 source_filter=source_filter
             )
             
+            # Drop weak matches so the LLM is never fed irrelevant context
+            search_results = [
+                r for r in search_results
+                if r.get("score", 0) >= self.config.SIMILARITY_THRESHOLD
+            ]
+
             if not search_results:
                 return {
                     "answer": "Based on the available texts, I cannot find relevant information to answer this question. Please try rephrasing your question or asking about specific verses or concepts from the Bhagavad Gita or Yoga Sutras.",
                     "confidence": 0.0
                 }
-            
+
             # Prepare context from search results
             context_parts = []
             
@@ -248,23 +249,10 @@ class RAGService:
     def search_by_verse(self, chapter: str, verse: str) -> Dict[str, Any]:
         """Search for a specific verse"""
         try:
-            verse_id = f"{chapter}.{verse}"
-            
-            # Get all documents to find the specific verse
-            # This is a simplified approach - in production, you'd want to use metadata filtering
-            search_results = self.vector_store.search(
-                query_embedding=self.api_client.get_embedding(f"chapter {chapter} verse {verse}"),
-                limit=50
-            )
-            
-            # Filter for exact verse match
-            exact_matches = [
-                result for result in search_results 
-                if result["metadata"].get("verse_id") == verse_id
-            ]
-            
-            if exact_matches:
-                result = exact_matches[0]
+            # Deterministic metadata lookup — no unreliable semantic search needed
+            result = self.vector_store.get_by_verse_id(chapter, verse)
+
+            if result:
                 return {
                     "found": True,
                     "sanskrit": result.get("sanskrit", ""),
@@ -276,7 +264,7 @@ class RAGService:
                 }
             else:
                 return {"found": False}
-                
+
         except Exception as e:
             logger.error(f"Error searching for verse {chapter}.{verse}: {e}")
             return {"found": False, "error": str(e)}

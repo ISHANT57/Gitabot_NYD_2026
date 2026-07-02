@@ -7,96 +7,221 @@ from config import Config
 
 logger = logging.getLogger(__name__)
 
+# How many texts to send to the embeddings API per request during bulk indexing.
+EMBED_BATCH_SIZE = 64
+EMBED_DIM = 1024  # mistral-embed output dimension (must match the FAISS store)
+
+
 class APIClient:
     def __init__(self):
         self.config = Config()
         self.mistral_api_key = self.config.MISTRAL_API_KEY
         self.openrouter_api_key = self.config.OPENROUTER_API_KEY
+        self.gemini_api_key = self.config.GEMINI_API_KEY
 
-    def get_embedding(self, text: str, use_api: bool = False, max_retries: int = 3) -> List[float]:
-        """Get embedding for text. By default uses hash-based for bulk loading, optionally uses API"""
-        # For bulk loading, use hash-based embeddings to avoid rate limits
-        if not use_api:
-            return self._get_embedding_openrouter(text)
-        
-        # Only use API when specifically requested
+    def _mistral_key_valid(self) -> bool:
+        """True only when a real Mistral key is configured (not the placeholder)."""
+        return bool(self.mistral_api_key) and self.mistral_api_key != "default_mistral_key"
+
+    def get_embedding(self, text: str, use_api: bool = True, max_retries: int = 5) -> List[float]:
+        """Get a single embedding. Uses the real Mistral API by default so that the
+        query is embedded the same way as the indexed documents."""
+        return self.get_embeddings([text], use_api=use_api, max_retries=max_retries)[0]
+
+    def get_embeddings(self, texts: List[str], use_api: bool = True,
+                       max_retries: int = 5) -> List[List[float]]:
+        """Embed a list of texts. Batches requests to the Mistral embeddings API.
+
+        Falls back to the (low-quality) hash embedding ONLY when no real key is
+        configured or the API keeps failing — and logs loudly when it does, since
+        hash embeddings make semantic search meaningless.
+        """
+        if not texts:
+            return []
+
+        if not use_api or not self._mistral_key_valid():
+            if use_api and not self._mistral_key_valid():
+                logger.warning(
+                    "MISTRAL_API_KEY not configured — falling back to LOW-QUALITY hash "
+                    "embeddings. Semantic search will not work properly until a real key is set."
+                )
+            return [self._get_embedding_hash(t) for t in texts]
+
+        results: List[List[float]] = []
+        total = len(texts)
+        for start in range(0, total, EMBED_BATCH_SIZE):
+            batch = texts[start:start + EMBED_BATCH_SIZE]
+            results.extend(self._embed_batch_mistral(batch, max_retries))
+            if total > EMBED_BATCH_SIZE and (start + EMBED_BATCH_SIZE) % (EMBED_BATCH_SIZE * 20) == 0:
+                logger.info(f"Embedded {min(start + EMBED_BATCH_SIZE, total)}/{total} texts")
+        return results
+
+    def _embed_batch_mistral(self, batch: List[str], max_retries: int) -> List[List[float]]:
+        """Embed one batch via the Mistral API, with exponential backoff on rate limits."""
+        url = "https://api.mistral.ai/v1/embeddings"
+        headers = {
+            "Authorization": f"Bearer {self.mistral_api_key}",
+            "Content-Type": "application/json",
+        }
+        data = {"model": self.config.EMBEDDING_MODEL, "input": batch}
+
         for attempt in range(max_retries):
             try:
-                url = "https://api.mistral.ai/v1/embeddings"
-                headers = {
-                    "Authorization": f"Bearer {self.mistral_api_key}",
-                    "Content-Type": "application/json"
-                }
+                response = requests.post(url, headers=headers, json=data, timeout=60)
 
-                data = {
-                    "model": self.config.EMBEDDING_MODEL,
-                    "input": [text]
-                }
-
-                response = requests.post(url, headers=headers, json=data)
-                
                 if response.status_code == 429:  # Rate limit hit
-                    wait_time = (2 ** attempt) * 5  # Exponential backoff: 5s, 10s, 20s
-                    logger.warning(f"Rate limit hit, waiting {wait_time}s before retry {attempt + 1}/{max_retries}")
+                    wait_time = (2 ** attempt) * 5  # 5s, 10s, 20s, ...
+                    logger.warning(
+                        f"Embedding rate limit hit, waiting {wait_time}s "
+                        f"(retry {attempt + 1}/{max_retries})"
+                    )
                     time.sleep(wait_time)
                     continue
-                    
+
                 response.raise_for_status()
                 result = response.json()
-                return result["data"][0]["embedding"]
+                # Sort by index to guarantee the order matches the input batch
+                items = sorted(result["data"], key=lambda x: x["index"])
+                return [item["embedding"] for item in items]
 
             except Exception as e:
-                if attempt == max_retries - 1:  # Last attempt
-                    logger.error(f"Error getting embedding from Mistral after {max_retries} attempts: {e}")
-                    # Fallback to hash-based embedding
-                    return self._get_embedding_openrouter(text)
-                else:
-                    logger.warning(f"Attempt {attempt + 1} failed, retrying: {e}")
-                    time.sleep(2)  # Wait 2 seconds before retry
-        
-        # Fallback if all retries failed
-        return self._get_embedding_openrouter(text)
+                if attempt == max_retries - 1:
+                    logger.error(
+                        f"Embedding batch failed after {max_retries} attempts ({e}); "
+                        f"falling back to hash embeddings for this batch."
+                    )
+                    return [self._get_embedding_hash(t) for t in batch]
+                logger.warning(f"Embedding attempt {attempt + 1} failed, retrying: {e}")
+                time.sleep(2 ** attempt)
 
-    def _get_embedding_openrouter(self, text: str) -> List[float]:
-        """Fallback embedding using OpenRouter (using chat completion with a simple prompt for similarity)"""
-        try:
-            # Since OpenRouter embedding API is not working properly, 
-            # let's use a simple fallback approach for now
-            # This is a temporary solution until API issues are resolved
+        return [self._get_embedding_hash(t) for t in batch]
 
-            # For now, create a simple hash-based pseudo-embedding
-            import hashlib
-            text_hash = hashlib.md5(text.encode()).hexdigest()
+    def _get_embedding_hash(self, text: str) -> List[float]:
+        """Deterministic hash-based pseudo-embedding. LAST-RESORT FALLBACK ONLY.
 
-            # Convert hash to a simple 1024-dimensional vector
-            embedding = []
-            for i in range(0, len(text_hash), 2):
-                hex_val = text_hash[i:i+2]
-                embedding.append(int(hex_val, 16) / 255.0)
+        This carries no semantic meaning and should never be the primary path —
+        it exists so the app degrades to something rather than crashing when the
+        embedding API is unavailable.
+        """
+        import hashlib
+        text_hash = hashlib.md5(text.encode()).hexdigest()
 
-            # Pad to 1024 dimensions to match expected embedding size
-            while len(embedding) < 1024:
-                embedding.extend(embedding[:min(len(embedding), 1024 - len(embedding))])
+        embedding: List[float] = []
+        for i in range(0, len(text_hash), 2):
+            hex_val = text_hash[i:i + 2]
+            embedding.append(int(hex_val, 16) / 255.0)
 
-            # Truncate to exactly 1024 if needed
-            embedding = embedding[:1024]
+        # Pad/truncate to the expected dimension
+        while len(embedding) < EMBED_DIM:
+            embedding.extend(embedding[:min(len(embedding), EMBED_DIM - len(embedding))])
+        return embedding[:EMBED_DIM]
 
-            logger.warning("Using fallback hash-based embedding due to API issues")
-            return embedding
+    def _gemini_key_valid(self) -> bool:
+        return bool(self.gemini_api_key) and self.gemini_api_key != "default_gemini_key"
 
-        except Exception as e:
-            logger.error(f"Error in fallback embedding: {e}")
-            raise
+    def _openrouter_key_valid(self) -> bool:
+        return bool(self.openrouter_api_key) and self.openrouter_api_key != "default_openrouter_key"
+
+    _SYSTEM_PROMPT = """You are a knowledgeable assistant for Hindu religious texts including the Bhagavad Gita, Ramayana, Mahabharata, and Yoga Sutras.
+
+INSTRUCTIONS:
+- Answer questions directly with facts from Hindu religious texts
+- Be respectful of the spiritual nature of these texts
+- Provide clear, direct answers without any source citations, book references, or location mentions
+- Do not mention where information can be found (no "found in", "mentioned in", "according to")
+- Focus only on the factual content from the texts
+- Give concise, informative answers
+
+Your goal is to provide direct factual answers about Hindu texts, teachings, characters, and concepts."""
+
+    def _build_user_prompt(self, question: str, context: str) -> str:
+        return f"""Sacred Text Context:
+{context}
+
+Question: {question}
+
+Answer directly with facts only, without mentioning sources or locations."""
 
     def generate_answer(self, question: str, context: str) -> str:
-        """Generate answer using Mixtral 8x7B Instruct via OpenRouter for humanized responses"""
-        try:
-            # Use OpenRouter as primary for Mixtral 8x7B Instruct
-            return self._generate_answer_openrouter(question, context)
-        except Exception as e:
-            logger.error(f"Error generating answer with OpenRouter: {e}")
-            # Return informative error message if OpenRouter fails
-            return "I'm unable to generate an answer right now because the AI service is temporarily unavailable. Please try again in a few moments, or check if there are relevant verses in the database that might help with your question."
+        """Generate an answer from the retrieved context.
+
+        Primary provider is Google Gemini; falls back to OpenRouter (Mixtral) if a
+        Gemini key is not configured or the Gemini call fails.
+        """
+        if self._gemini_key_valid():
+            try:
+                return self._generate_answer_gemini(question, context)
+            except Exception as e:
+                logger.error(f"Gemini answer generation failed: {e}")
+                if self._openrouter_key_valid():
+                    logger.info("Falling back to OpenRouter for answer generation")
+                    try:
+                        return self._generate_answer_openrouter(question, context)
+                    except Exception as e2:
+                        logger.error(f"OpenRouter fallback also failed: {e2}")
+        elif self._openrouter_key_valid():
+            try:
+                return self._generate_answer_openrouter(question, context)
+            except Exception as e:
+                logger.error(f"Error generating answer with OpenRouter: {e}")
+        else:
+            logger.error("No answer-generation key configured (need GEMINI_API_KEY or OPENROUTER_API_KEY)")
+
+        return "I'm unable to generate an answer right now because the AI service is temporarily unavailable. Please try again in a few moments, or check if there are relevant verses in the database that might help with your question."
+
+    def _generate_answer_gemini(self, question: str, context: str) -> str:
+        """Generate an answer using Google Gemini."""
+        model = self.config.GEMINI_MODEL
+        url = (
+            f"https://generativelanguage.googleapis.com/v1beta/models/"
+            f"{model}:generateContent?key={self.gemini_api_key}"
+        )
+        headers = {"Content-Type": "application/json"}
+        data = {
+            "system_instruction": {"parts": [{"text": self._SYSTEM_PROMPT}]},
+            "contents": [
+                {"role": "user", "parts": [{"text": self._build_user_prompt(question, context)}]}
+            ],
+            "generationConfig": {"temperature": 0.4, "maxOutputTokens": 1200},
+        }
+
+        # Retry on transient errors (429 rate limit, 500/503 server overload) with backoff.
+        transient = {429, 500, 502, 503, 504}
+        max_retries = 4
+        last_exc = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(url, headers=headers, json=data, timeout=60)
+                if response.status_code in transient:
+                    wait_time = (2 ** attempt) * 2  # 2s, 4s, 8s, 16s
+                    logger.warning(
+                        f"Gemini transient {response.status_code}, waiting {wait_time}s "
+                        f"(retry {attempt + 1}/{max_retries})"
+                    )
+                    time.sleep(wait_time)
+                    continue
+
+                response.raise_for_status()
+                result = response.json()
+
+                candidates = result.get("candidates", [])
+                if not candidates:
+                    raise ValueError(f"Gemini returned no candidates: {result}")
+                parts = candidates[0].get("content", {}).get("parts", [])
+                text = "".join(p.get("text", "") for p in parts).strip()
+                if not text:
+                    raise ValueError(f"Gemini returned empty text: {result}")
+                return text
+
+            except requests.exceptions.RequestException as e:
+                last_exc = e
+                if attempt < max_retries - 1:
+                    time.sleep((2 ** attempt) * 2)
+                    continue
+                raise
+
+        # Exhausted retries on transient status codes
+        raise RuntimeError(f"Gemini unavailable after {max_retries} attempts (last status transient)")
 
     def _generate_answer_openrouter(self, question: str, context: str) -> str:
         """Generate humanized answer using Mixtral 8x7B Instruct via OpenRouter"""

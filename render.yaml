@@ -8,10 +8,17 @@ services:
       - key: HF_REPO_ID
         value: Ishant57/dharmabot-index
       - key: HF_TOKEN
-        sync: false          # Leave blank — repo is public, no token needed on Render
-      - key: OPENROUTER_API_KEY
-        sync: false
+        sync: false          # Leave blank if the index repo is public
+      # Embeddings — REQUIRED (used to embed every query at runtime, not just at build)
       - key: MISTRAL_API_KEY
+        sync: false
+      # Answer generation — primary provider
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash   # 2.0-flash is quota-capped to 0 on the current key
+      # Answer generation — optional fallback (leave unset if you have no key)
+      - key: OPENROUTER_API_KEY
         sync: false
       - key: SESSION_SECRET
         generateValue: true
