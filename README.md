@@ -61,3 +61,62 @@ Preferred communication style: Simple, everyday language.
 - **Logging**: Comprehensive logging throughout the application stack
 - **Error Handling**: Graceful fallbacks and user-friendly error messages
 - **WSGI Deployment**: Production-ready setup with ProxyFix middleware
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in:
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `MISTRAL_API_KEY` | Yes | Real embeddings (`mistral-embed`). Used both when building the index **and** to embed every query at runtime. |
+| `GEMINI_API_KEY` | Yes | Primary answer generation. |
+| `GEMINI_MODEL` | No | Answer model. Defaults to `gemini-2.5-flash`. |
+| `OPENROUTER_API_KEY` | No | Optional fallback answer generator (Mixtral 8x7B). |
+| `HF_REPO_ID` | Deploy | HuggingFace dataset repo holding the prebuilt index. |
+| `HF_TOKEN` | If private | HuggingFace token; needed only if the index repo is private. |
+| `PORT` | No | Port for the dev server (`main.py`). Defaults to `5000`. |
+| `FLASK_DEBUG` | No | `true` to enable Flask debug mode locally. Defaults to off. |
+| `LOG_LEVEL` | No | Log verbosity. Defaults to `INFO` (use `DEBUG` locally; avoid in prod — DEBUG logs the API key in request URLs). |
+| `SESSION_SECRET` | No | Flask session secret. |
+
+## Local Development
+
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements.txt   # Windows
+# source .venv/bin/activate && pip install -r requirements.txt   # macOS/Linux
+
+# Build the FAISS index from attached_assets/ (needs MISTRAL_API_KEY):
+python -c "from services.rag_service import RAGService; RAGService().initialize_database(force_reload=True)"
+
+python main.py   # serves on http://localhost:5000  (override with PORT)
+```
+
+## The Vector Index
+
+The index (`vector_index.faiss` + `metadata.json`, ~230 MB) is **not** committed to git.
+It is stored on a HuggingFace dataset repo and pulled at deploy time.
+
+- **Publish** a freshly built index: `python upload_index.py` (needs `HF_TOKEN` with write access).
+- **Download** happens automatically on deploy via `download_index.py`.
+
+> Rebuild + re-upload the index whenever the corpus or embedding model changes,
+> or production will serve a stale index.
+
+## Deploying on Render
+
+The repo includes `render.yaml` (Blueprint). Steps:
+
+1. **New → Web Service** and connect this GitHub repo; Render auto-detects `render.yaml`.
+2. **Instance type: Standard (2 GB RAM) or larger.** The index loads fully into memory
+   (~1.3 GB); the 512 MB Free/Starter tiers will OOM on boot.
+3. Set the secret env vars (marked `sync: false`) in the dashboard:
+   `MISTRAL_API_KEY`, `GEMINI_API_KEY` (and `GEMINI_MODEL=gemini-2.5-flash`).
+   Set `HF_TOKEN` only if the index repo is private.
+4. Deploy. Boot runs `download_index.py` (pulls the index from HuggingFace) then
+   gunicorn. The `/api/stats` health check turns green once the index is loaded.
+
+Notes:
+- Every query embeds via the Mistral API, so `MISTRAL_API_KEY` must be set in production.
+- Gemini free-tier quotas apply; heavy traffic may hit `429`. Enable billing on the
+  Google project for a reliable public deployment.
